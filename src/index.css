@@ -19,6 +19,11 @@
 }
 
 @layer base {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
   html {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     scroll-behavior: smooth;
@@ -39,30 +44,34 @@
 
 .font-urdu {
   font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', 'Urdu Typesetting', serif !important;
-  line-height: 2.2 !important;
+  line-height: 2 !important;
   letter-spacing: 0;
-  word-spacing: 0.05em;
+  word-spacing: 0.04em;
   padding-top: 0.1em;
-  padding-bottom: 0.15em;
+  padding-bottom: 0.12em;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .font-urdu-title {
   font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', serif !important;
-  line-height: 2 !important;
+  line-height: 1.85 !important;
   letter-spacing: 0;
-  word-spacing: 0.06em;
-  padding-top: 0.2em;
-  padding-bottom: 0.25em;
+  word-spacing: 0.05em;
+  padding-top: 0.15em;
+  padding-bottom: 0.2em;
   overflow: visible !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Fix for Urdu cutting off on mobile: ensure ample line-height and balanced font size */
 [dir="rtl"] {
   font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', serif;
-  line-height: 2.1;
+  line-height: 2;
   word-break: normal;
   overflow-wrap: break-word;
-  font-size: 1.06rem;
+  font-size: 1.05rem;
 }
 
 [dir="rtl"] .leading-tight,
@@ -70,7 +79,7 @@
 [dir="rtl"] .leading-none,
 [dir="rtl"] .leading-normal,
 [dir="rtl"] .leading-relaxed {
-  line-height: 2.1 !important;
+  line-height: 2 !important;
 }
 
 [dir="rtl"] h1,
@@ -79,43 +88,45 @@
 [dir="rtl"] h4,
 [dir="rtl"] h5,
 [dir="rtl"] h6 {
-  line-height: 2 !important;
-  padding-top: 0.15rem;
-  padding-bottom: 0.25rem;
+  line-height: 1.85 !important;
+  padding-top: 0.12rem;
+  padding-bottom: 0.2rem;
   overflow: visible !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Tastefully elevate Urdu text sizes so Nastaliq is comfortable and clear, not too small or oversized */
 [dir="rtl"] .text-xs {
   font-size: 0.88rem !important;
-  line-height: 2 !important;
+  line-height: 1.85 !important;
 }
 
 [dir="rtl"] .text-sm {
   font-size: 1.02rem !important;
-  line-height: 2.1 !important;
+  line-height: 1.95 !important;
 }
 
 [dir="rtl"] .text-base {
   font-size: 1.15rem !important;
-  line-height: 2.2 !important;
+  line-height: 2.05 !important;
 }
 
 [dir="rtl"] .text-lg {
   font-size: 1.28rem !important;
-  line-height: 2.2 !important;
+  line-height: 2.05 !important;
 }
 
 [dir="rtl"] .text-xl {
   font-size: 1.45rem !important;
-  line-height: 2.1 !important;
+  line-height: 2 !important;
 }
 
 [dir="rtl"] p,
 [dir="rtl"] span,
 [dir="rtl"] li,
 [dir="rtl"] label {
-  line-height: 2.1;
+  line-height: 1.95;
   overflow: visible;
 }
 
@@ -126,36 +137,54 @@
 
 @media (max-width: 640px) {
   [dir="rtl"] {
-    font-size: 1.02rem;
+    font-size: 0.98rem;
+    line-height: 1.85;
   }
   [dir="rtl"] h1 {
-    font-size: 2.05rem !important;
-    line-height: 2.2 !important;
+    font-size: 1.65rem !important;
+    line-height: 1.85 !important;
   }
   [dir="rtl"] h2 {
-    font-size: 1.7rem !important;
-    line-height: 2.1 !important;
+    font-size: 1.42rem !important;
+    line-height: 1.85 !important;
   }
   [dir="rtl"] h3 {
-    font-size: 1.38rem !important;
-    line-height: 2 !important;
+    font-size: 1.22rem !important;
+    line-height: 1.8 !important;
   }
   [dir="rtl"] p {
-    font-size: 1.05rem;
-    line-height: 2.1 !important;
+    font-size: 0.98rem !important;
+    line-height: 1.85 !important;
   }
   [dir="rtl"] .text-xs {
-    font-size: 0.84rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.75 !important;
   }
   [dir="rtl"] .text-sm {
-    font-size: 0.98rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.8 !important;
   }
   [dir="rtl"] .text-base {
-    font-size: 1.08rem !important;
+    font-size: 1.02rem !important;
+    line-height: 1.85 !important;
+  }
+  [dir="rtl"] .text-lg {
+    font-size: 1.15rem !important;
+    line-height: 1.85 !important;
+  }
+  [dir="rtl"] .text-xl {
+    font-size: 1.28rem !important;
+    line-height: 1.85 !important;
   }
   [dir="rtl"] button span,
   [dir="rtl"] a span {
-    line-height: 1.9;
+    line-height: 1.75;
+  }
+  [dir="rtl"] input,
+  [dir="rtl"] select,
+  [dir="rtl"] textarea {
+    font-size: 0.95rem !important;
+    line-height: 1.8 !important;
   }
 }
 

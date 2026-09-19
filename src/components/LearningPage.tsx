@@ -91,7 +91,7 @@ export const LearningPage: React.FC<LearningPageProps> = ({ setCurrentPage, lang
             </p>
 
             {/* Clear notice about inquiries & Admission */}
-            <div className="bg-white border-2 border-[#C99738]/40 rounded-3xl p-6 sm:p-7 space-y-4 shadow-sm relative overflow-hidden">
+            <div className="bg-white border-2 border-[#C99738]/40 rounded-3xl p-5 sm:p-7 space-y-4 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-radial from-[#ECC876]/15 to-transparent blur-xl pointer-events-none" />
               <div className="flex items-center gap-3 text-[#072B1B] relative">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] flex items-center justify-center shrink-0 border border-[#C99738]/40">
@@ -188,7 +188,7 @@ export const LearningPage: React.FC<LearningPageProps> = ({ setCurrentPage, lang
                   }`}
                 >
                   {/* Top Decorative Header */}
-                  <div className="p-7 pb-4 space-y-4">
+                  <div className="p-5 sm:p-7 pb-4 space-y-4">
                     <div className="flex items-center justify-between gap-2">
                       <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center font-bold text-sm shadow-md border border-[#C99738]/40 shrink-0">
                         <IslamicStarIcon size={22} className="text-[#ECC876]" />
@@ -244,7 +244,7 @@ export const LearningPage: React.FC<LearningPageProps> = ({ setCurrentPage, lang
                   </div>
 
                   {/* Bottom Action Buttons */}
-                  <div className="p-6 pt-3 bg-gradient-to-r from-white via-[#FAF7F2] to-white border-t border-[#C99738]/20 flex flex-col sm:flex-row items-center gap-2">
+                  <div className="p-4 sm:p-6 pt-3 bg-gradient-to-r from-white via-[#FAF7F2] to-white border-t border-[#C99738]/20 flex flex-col sm:flex-row items-center gap-2">
                     <button
                       id={`course-apply-btn-${course.id}`}
                       onClick={() => handleNav('admission')}

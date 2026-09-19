@@ -197,7 +197,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, lang }) =>
           {t.about.valuesList.map((val, idx) => (
             <div
               key={idx}
-              className="luxury-card rounded-2xl p-6 sm:p-7 flex items-start gap-4 text-start bg-white"
+              className="luxury-card rounded-2xl p-5 sm:p-7 flex items-start gap-4 text-start bg-white"
             >
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 mt-1 border border-[#C99738]/40 shadow-xs">
                 <CheckCircle2 className="w-5 h-5" />
@@ -217,7 +217,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, lang }) =>
 
       {/* 5. Bottom Connection Banner */}
       <section className="bg-[#FAF7F2] pb-18 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-b from-[#041A10] via-[#072B1B] to-[#03150D] text-white rounded-3xl p-8 sm:p-12 text-center space-y-6 relative overflow-hidden border-2 border-[#C99738]/40 shadow-2xl">
+        <div className="bg-gradient-to-b from-[#041A10] via-[#072B1B] to-[#03150D] text-white rounded-3xl p-6 sm:p-10 md:p-12 text-center space-y-6 relative overflow-hidden border-2 border-[#C99738]/40 shadow-2xl">
           <div className="absolute inset-0 bg-islamic-pattern-dark opacity-30 pointer-events-none" />
           
           <h2 className={`font-bold text-white relative ${

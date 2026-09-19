@@ -100,7 +100,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
               </div>
 
               {/* Quick Trust Highlights */}
-              <div className={`pt-6 border-t border-[#C99738]/20 grid grid-cols-2 sm:grid-cols-3 gap-4 ${lang === 'ur' ? 'text-right' : 'text-left'}`}>
+              <div className={`pt-6 border-t border-[#C99738]/20 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4 ${lang === 'ur' ? 'text-right' : 'text-left'}`}>
                 <div className="flex items-center gap-2 text-xs font-semibold text-[#072B1B] bg-white/70 backdrop-blur-xs p-2.5 rounded-xl border border-[#C99738]/25 shadow-2xs">
                   <CheckCircle2 className="w-4 h-4 text-[#0D5C3A] shrink-0" />
                   <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.quickPointers.sincere}</span>
@@ -109,7 +109,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
                   <CheckCircle2 className="w-4 h-4 text-[#0D5C3A] shrink-0" />
                   <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.quickPointers.values}</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#072B1B] bg-white/70 backdrop-blur-xs p-2.5 rounded-xl border border-[#C99738]/25 shadow-2xs col-span-2 sm:col-span-1">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#072B1B] bg-white/70 backdrop-blur-xs p-2.5 rounded-xl border border-[#C99738]/25 shadow-2xs">
                   <CheckCircle2 className="w-4 h-4 text-[#0D5C3A] shrink-0" />
                   <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.quickPointers.welcoming}</span>
                 </div>
@@ -126,16 +126,16 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
                   <img
                     src={heroImage}
                     alt="Al-Ikhlas Islamic Institute peaceful learning visual"
-                    className="w-full h-[320px] sm:h-[390px] object-cover"
+                    className="w-full h-[300px] sm:h-[390px] object-cover"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#041A10]/90 via-[#041A10]/20 to-transparent" />
                   
                   {/* Floating badge inside visual - Luxury Dark Glass */}
-                  <div className="absolute bottom-4 left-4 right-4 bg-[#072B1B]/90 backdrop-blur-xl rounded-xl p-4 shadow-xl border border-[#C99738]/40">
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#0D5C3A] to-[#041A10] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/50 shadow-xs">
-                        <IslamicStarIcon size={20} className="text-[#ECC876]" />
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-[#072B1B]/90 backdrop-blur-xl rounded-xl p-3 sm:p-4 shadow-xl border border-[#C99738]/40">
+                    <div className="flex items-center gap-3 sm:gap-3.5">
+                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#0D5C3A] to-[#041A10] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/50 shadow-xs">
+                        <IslamicStarIcon size={18} className="text-[#ECC876]" />
                       </div>
                       <div>
                         <p className={`font-bold text-[#F5E1A4] ${lang === 'ur' ? 'font-urdu text-base' : 'font-display text-sm'}`}>
@@ -242,7 +242,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
 
       {/* 4. LEARNING SECTION */}
       <section className="py-16 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] rounded-3xl p-8 sm:p-12 border-2 border-[#C99738]/30 shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] rounded-3xl p-5 sm:p-8 md:p-12 border-2 border-[#C99738]/30 shadow-xl relative overflow-hidden">
           {/* Subtle gold watermark */}
           <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-radial from-[#C99738]/10 to-transparent blur-2xl pointer-events-none" />
 
@@ -353,20 +353,20 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
 
       {/* 6. CONTACT PREVIEW SECTION - Concierge Luxury Card */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-white via-[#FAF7F2] to-white rounded-3xl p-7 sm:p-10 border-2 border-[#C99738]/30 shadow-lg">
+        <div className="bg-gradient-to-r from-white via-[#FAF7F2] to-white rounded-3xl p-5 sm:p-8 md:p-10 border-2 border-[#C99738]/30 shadow-lg">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             
-            <div className={`flex items-center gap-5 text-center ${lang === 'ur' ? 'md:text-right' : 'md:text-left'}`}>
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/50 shadow-md">
-                <Phone className="w-8 h-8 text-[#ECC876]" />
+            <div className={`flex flex-col sm:flex-row items-center gap-4 sm:gap-5 text-center ${lang === 'ur' ? 'sm:text-right' : 'sm:text-left'}`}>
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/50 shadow-md">
+                <Phone className="w-7 h-7 sm:w-8 sm:h-8 text-[#ECC876]" />
               </div>
               <div className="space-y-1">
                 <h3 className={`font-bold text-[#072B1B] ${
-                  lang === 'ur' ? 'font-urdu-title text-2xl' : 'font-display text-xl sm:text-2xl'
+                  lang === 'ur' ? 'font-urdu-title text-xl sm:text-2xl' : 'font-display text-xl sm:text-2xl'
                 }`}>
                   {t.instituteName}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 flex items-center justify-center md:justify-start gap-1.5 font-medium">
+                <p className="text-xs sm:text-sm text-slate-600 flex items-center justify-center sm:justify-start gap-1.5 font-medium">
                   <MapPin className="w-3.5 h-3.5 text-[#C99738]" />
                   <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.contactPreviewLocation}</span>
                 </p>

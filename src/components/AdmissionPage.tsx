@@ -191,7 +191,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
           <div id="admission-success-slip" className="space-y-8 animate-in fade-in duration-300">
             
             {/* Top Slip Header Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#C99738]/40 shadow-lg relative overflow-hidden">
+            <div className="bg-white rounded-3xl p-4 sm:p-7 md:p-10 border-2 border-[#C99738]/40 shadow-lg relative overflow-hidden">
               
               <div className="text-center space-y-3 pb-6 border-b border-slate-100">
                 <SubtleBismillahOrnament className="mx-auto text-[#0D5C3A]" />
@@ -353,7 +353,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
           <div className="space-y-8">
             
             {/* Guidance banner - Luxury Pearl White */}
-            <div className="bg-white border-2 border-[#C99738]/40 rounded-3xl p-6 sm:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+            <div className="bg-white border-2 border-[#C99738]/40 rounded-3xl p-4 sm:p-6 md:p-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-radial from-[#ECC876]/15 to-transparent blur-xl pointer-events-none" />
               <div className="flex items-start gap-3.5 relative">
                 <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 mt-0.5 border border-[#C99738]/40 shadow-xs">
@@ -381,7 +381,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
             </div>
 
             {/* Main Form Container */}
-            <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#C99738]/30 shadow-xl space-y-8 relative overflow-hidden">
+            <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-4 sm:p-7 md:p-10 border-2 border-[#C99738]/30 shadow-xl space-y-8 relative overflow-hidden">
               
               {/* Form Validation Alert */}
               {formError && (

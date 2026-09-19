@@ -109,9 +109,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="brand-logo-btn"
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-3.5 text-left group focus:outline-none focus:ring-2 focus:ring-[#C99738]/40 rounded-xl p-1 transition-all"
+            className="flex items-center gap-2.5 sm:gap-3.5 text-start group focus:outline-none focus:ring-2 focus:ring-[#C99738]/40 rounded-xl p-1 transition-all"
           >
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] group-hover:shadow-[0_0_15px_rgba(201,151,56,0.35)] transition-all shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] group-hover:shadow-[0_0_15px_rgba(201,151,56,0.35)] transition-all shrink-0 flex items-center justify-center overflow-hidden">
               <img 
                 src="/src/assets/images/logo.png" 
                 alt="Al-Ikhlas Islamic Institute Logo" 
@@ -121,11 +121,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <span className={`block font-bold tracking-tight text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors ${
-                lang === 'ur' ? 'font-urdu-title text-base sm:text-xl text-right leading-relaxed py-0.5' : 'font-display text-lg sm:text-xl leading-tight'
+                lang === 'ur' ? 'font-urdu-title text-sm sm:text-lg md:text-xl text-start leading-snug sm:leading-relaxed py-0.5' : 'font-display text-base sm:text-lg md:text-xl leading-tight'
               }`}>
                 {t.instituteName}
               </span>
-              <span className={`block text-[10px] sm:text-[11px] font-bold text-[#9C7524] ${
+              <span className={`block text-[9px] sm:text-[11px] font-bold text-[#9C7524] ${
                 lang === 'ur' ? 'font-urdu tracking-normal' : 'tracking-[0.2em] uppercase'
               }`}>
                 {t.instituteCategory}
@@ -198,11 +198,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile menu trigger */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5">
             <button
               id="mobile-header-lang-btn"
               onClick={toggleLanguage}
-              className="p-2 text-xs font-bold text-[#072B1B] bg-white rounded-xl border border-[#C99738]/30 flex items-center gap-1 shadow-xs"
+              className="px-2.5 py-1.5 text-xs font-bold text-[#072B1B] bg-white rounded-xl border border-[#C99738]/30 flex items-center gap-1 shadow-xs"
               aria-label="Toggle language"
             >
               <Globe className="w-3.5 h-3.5 text-[#C99738]" />
@@ -223,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-slate-700 hover:bg-[#FAF7F2] border border-transparent hover:border-[#C99738]/30 focus:outline-none transition-all"
+              className="p-1.5 rounded-xl text-slate-700 hover:bg-[#FAF7F2] border border-transparent hover:border-[#C99738]/30 focus:outline-none transition-all"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6 text-[#072B1B]" /> : <Menu className="w-6 h-6 text-[#072B1B]" />}
@@ -243,7 +243,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     key={item.id}
                     id={`mobile-nav-${item.id}`}
                     onClick={() => handleNavClick(item.id)}
-                    className={`w-full text-left px-4 py-2.5 rounded-xl text-base font-medium flex items-center justify-between transition-all ${
+                    className={`w-full text-start px-4 py-2.5 rounded-xl text-base font-medium flex items-center justify-between transition-all ${
                       lang === 'ur' ? 'font-urdu' : ''
                     } ${
                       isActive

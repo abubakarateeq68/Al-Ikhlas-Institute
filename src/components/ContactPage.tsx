@@ -77,7 +77,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-12">
           
           {/* Telephone Card */}
-          <div className="luxury-card p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#C99738]/30 shadow-md hover:shadow-xl transition-all space-y-6">
+          <div className="luxury-card p-5 sm:p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#C99738]/30 shadow-md hover:shadow-xl transition-all space-y-6">
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/40 shadow-xs">
                 <Phone className="w-6 h-6" />
@@ -111,7 +111,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
           </div>
 
           {/* WhatsApp Direct Card */}
-          <div className="luxury-card p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#25D366]/40 hover:border-[#25D366] shadow-md hover:shadow-xl transition-all space-y-6">
+          <div className="luxury-card p-5 sm:p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#25D366]/40 hover:border-[#25D366] shadow-md hover:shadow-xl transition-all space-y-6">
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-[#25D366]/15 text-[#128C7E] flex items-center justify-center shrink-0 border border-[#25D366]/30 shadow-xs">
                 <WhatsAppIcon className="w-7 h-7 fill-[#128C7E] text-[#128C7E]" />
@@ -149,7 +149,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
           </div>
 
           {/* Location / Campus Card */}
-          <div className="luxury-card p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#C99738]/30 shadow-md hover:shadow-xl transition-all space-y-6">
+          <div className="luxury-card p-5 sm:p-7 rounded-3xl flex flex-col justify-between bg-white border border-[#C99738]/30 shadow-md hover:shadow-xl transition-all space-y-6">
             <div className="space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shrink-0 border border-[#C99738]/40 shadow-xs">
                 <MapPin className="w-6 h-6" />
