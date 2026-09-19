@@ -3,6 +3,7 @@ import { Phone, MapPin, ArrowUp, Globe, FileEdit } from 'lucide-react';
 import { PageView, Language } from '../types.ts';
 import { IslamicStarIcon, GeometricDivider } from './IslamicMotif.tsx';
 import { translations } from '../translations.ts';
+import logoImg from '../assets/images/logo.png';
 
 interface FooterProps {
   setCurrentPage: (page: PageView) => void;
@@ -34,9 +35,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, lang, setLang })
           {/* Institute Brand & Motto */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] p-1 shadow-lg border-2 border-[#C99738]/50 ring-1 ring-[#C99738]/25 shrink-0 flex items-center justify-center overflow-hidden">
+              <div className="w-14 h-14 rounded-2xl bg-white p-1.5 shadow-lg border-2 border-[#C99738]/50 ring-1 ring-[#C99738]/25 shrink-0 flex items-center justify-center overflow-hidden">
                 <img 
-                  src="/src/assets/images/logo.png" 
+                  src={logoImg} 
                   alt="Al-Ikhlas Islamic Institute Logo" 
                   className="w-full h-full object-contain rounded-lg"
                   referrerPolicy="no-referrer"

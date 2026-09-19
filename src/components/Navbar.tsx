@@ -3,6 +3,7 @@ import { Phone, MapPin, Menu, X, ArrowUpRight, Globe, FileEdit } from 'lucide-re
 import { PageView, Language } from '../types.ts';
 import { IslamicStarIcon } from './IslamicMotif.tsx';
 import { translations } from '../translations.ts';
+import logoImg from '../assets/images/logo.png';
 
 interface NavbarProps {
   currentPage: PageView;
@@ -111,9 +112,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => handleNavClick('home')}
             className="flex items-center gap-2.5 sm:gap-3.5 text-start group focus:outline-none focus:ring-2 focus:ring-[#C99738]/40 rounded-xl p-1 transition-all"
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-white via-[#FAF7F2] to-[#F3EFE6] p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] group-hover:shadow-[0_0_15px_rgba(201,151,56,0.35)] transition-all shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-xl bg-white p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] group-hover:shadow-[0_0_15px_rgba(201,151,56,0.35)] transition-all shrink-0 flex items-center justify-center overflow-hidden">
               <img 
-                src="/src/assets/images/logo.png" 
+                src={logoImg} 
                 alt="Al-Ikhlas Islamic Institute Logo" 
                 className="w-full h-full object-contain rounded-lg group-hover:scale-105 transition-transform duration-300"
                 referrerPolicy="no-referrer"
