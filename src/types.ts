@@ -20,6 +20,7 @@ export interface AdmissionFormData {
   cityArea: string;
   program: string;
   preferredTiming: string;
+  hifzSession?: string;
   educationBackground: string;
   previousIslamicStudy: string;
   additionalNotes: string;

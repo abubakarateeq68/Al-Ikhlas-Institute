@@ -39,6 +39,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     cityArea: '',
     program: '',
     preferredTiming: 'flexible',
+    hifzSession: 'session1',
     educationBackground: '',
     previousIslamicStudy: '',
     additionalNotes: '',
@@ -151,6 +152,29 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     { value: 'evening', label: t.admission.timingOptions.evening },
     { value: 'weekend', label: t.admission.timingOptions.weekend },
     { value: 'flexible', label: t.admission.timingOptions.flexible }
+  ];
+
+  const hifzSessions = [
+    {
+      value: 'session1',
+      label: 'پہلا سیشن| فجر کے بعد 5:00 تا 5:30',
+      labelEn: 'Session 1 | After Fajr 5:00 to 5:30'
+    },
+    {
+      value: 'session2',
+      label: 'دوسرا سیشن| صبح 6:40 تا 7:10',
+      labelEn: 'Session 2 | Morning 6:40 to 7:10'
+    },
+    {
+      value: 'session3',
+      label: 'تیسرا سیشن| دوپہر 2:00 تا 3:00',
+      labelEn: 'Session 3 | Afternoon 2:00 to 3:00'
+    },
+    {
+      value: 'session4',
+      label: 'چوتھا سیشن| رات 10:00 تا 11:00',
+      labelEn: 'Session 4 | Night 10:00 to 11:00'
+    }
   ];
 
   return (
@@ -282,9 +306,15 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
                   </div>
 
                   <div className="bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
-                    <span className="text-xs text-slate-500 block font-medium">{t.admission.timingLabel}:</span>
+                    <span className="text-xs text-slate-500 block font-medium">
+                      {submittedData.data.program === 'hifz' 
+                        ? (lang === 'ur' ? 'منتخب سیشن / اوقاتِ حفظ:' : 'Selected Hifz Session:') 
+                        : `${t.admission.timingLabel}:`}
+                    </span>
                     <span className="font-semibold text-slate-800">
-                      {timingOptions.find(opt => opt.value === submittedData.data.preferredTiming)?.label || submittedData.data.preferredTiming}
+                      {submittedData.data.program === 'hifz'
+                        ? (hifzSessions.find(s => s.value === submittedData.data.hifzSession)?.label || submittedData.data.preferredTiming || submittedData.data.hifzSession)
+                        : (timingOptions.find(opt => opt.value === submittedData.data.preferredTiming)?.label || submittedData.data.preferredTiming)}
                     </span>
                   </div>
 
@@ -577,7 +607,15 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
                       name="program"
                       required
                       value={formData.program}
-                      onChange={(e) => setFormData({ ...formData, program: e.target.value })}
+                      onChange={(e) => {
+                        const selectedVal = e.target.value;
+                        setFormData({ 
+                          ...formData, 
+                          program: selectedVal,
+                          hifzSession: selectedVal === 'hifz' ? (formData.hifzSession || 'session1') : formData.hifzSession,
+                          preferredTiming: selectedVal === 'hifz' ? (hifzSessions.find(s => s.value === (formData.hifzSession || 'session1'))?.label || 'پہلا سیشن| فجر کے بعد 5:00 تا 5:30') : formData.preferredTiming
+                        });
+                      }}
                       className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 text-slate-800 text-sm bg-[#FAF8F5]/50 outline-none transition-all font-medium"
                     >
                       <option value="">{t.admission.programSelectPlaceholder}</option>
@@ -589,25 +627,73 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
                     </select>
                   </div>
 
-                  {/* Preferred Timing */}
-                  <div className="space-y-1.5 sm:col-span-2">
-                    <label htmlFor="preferredTiming" className={`block text-xs font-bold uppercase tracking-wider text-slate-700 ${lang === 'ur' ? 'font-urdu' : ''}`}>
-                      {t.admission.timingLabel}
-                    </label>
-                    <select
-                      id="preferredTiming"
-                      name="preferredTiming"
-                      value={formData.preferredTiming}
-                      onChange={(e) => setFormData({ ...formData, preferredTiming: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 text-slate-800 text-sm bg-[#FAF8F5]/50 outline-none transition-all"
-                    >
-                      {timingOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  {/* Hifz Sessions: Show ONLY when Hifz ul Quran is selected */}
+                  {formData.program === 'hifz' && (
+                    <div className="sm:col-span-2 space-y-3 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FAF7F2] via-white to-[#FAF7F2] border-2 border-[#C99738]/50 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="flex items-center gap-2 pb-1 border-b border-[#C99738]/20">
+                        <Clock className="w-4 h-4 text-[#C99738] shrink-0" />
+                        <label className={`block text-xs sm:text-sm font-bold text-[#072B1B] ${lang === 'ur' ? 'font-urdu' : ''}`}>
+                          {lang === 'ur' ? 'حفظ القرآن کے لیے مطلوبہ سیشن منتخب فرمائیں:' : 'Select Desired Hifz-ul-Quran Session:'} <span className="text-[#0D5C3A]">*</span>
+                        </label>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        {hifzSessions.map((session) => {
+                          const isSelected = formData.hifzSession === session.value;
+                          return (
+                            <label
+                              key={session.value}
+                              className={`p-3.5 sm:p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center gap-3 ${
+                                isSelected
+                                  ? 'bg-gradient-to-r from-[#072B1B] to-[#0D5C3A] text-white border-[#C99738] shadow-md scale-[1.01]'
+                                  : 'bg-white text-slate-700 border-slate-200 hover:border-[#C99738]/50 hover:bg-[#FAF7F2]'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="hifzSession"
+                                value={session.value}
+                                checked={isSelected}
+                                onChange={() => {
+                                  setFormData({ 
+                                    ...formData, 
+                                    hifzSession: session.value,
+                                    preferredTiming: session.label
+                                  });
+                                }}
+                                className="w-4 h-4 text-[#C99738] accent-[#0D5C3A] cursor-pointer shrink-0"
+                              />
+                              <span className={`text-xs sm:text-sm font-bold ${lang === 'ur' ? 'font-urdu leading-relaxed' : ''} ${isSelected ? 'text-[#F5E1A4]' : 'text-[#072B1B]'}`}>
+                                {lang === 'ur' ? session.label : session.labelEn}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Preferred Timing: Shown for all other courses */}
+                  {formData.program !== 'hifz' && (
+                    <div className="space-y-1.5 sm:col-span-2">
+                      <label htmlFor="preferredTiming" className={`block text-xs font-bold uppercase tracking-wider text-slate-700 ${lang === 'ur' ? 'font-urdu' : ''}`}>
+                        {t.admission.timingLabel}
+                      </label>
+                      <select
+                        id="preferredTiming"
+                        name="preferredTiming"
+                        value={formData.preferredTiming}
+                        onChange={(e) => setFormData({ ...formData, preferredTiming: e.target.value })}
+                        className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 text-slate-800 text-sm bg-[#FAF8F5]/50 outline-none transition-all"
+                      >
+                        {timingOptions.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
               </div>
 
