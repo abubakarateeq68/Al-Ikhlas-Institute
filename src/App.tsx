@@ -54,7 +54,7 @@ export default function App() {
         {currentPage === 'about' && <AboutPage setCurrentPage={handlePageChange} lang={lang} />}
         {currentPage === 'learning' && <LearningPage setCurrentPage={handlePageChange} lang={lang} />}
         {currentPage === 'admission' && <AdmissionPage setCurrentPage={handlePageChange} lang={lang} />}
-        {currentPage === 'contact' && <ContactPage lang={lang} />}
+        {currentPage === 'contact' && <ContactPage setCurrentPage={handlePageChange} lang={lang} />}
       </main>
 
       {/* Persistent Footer */}
