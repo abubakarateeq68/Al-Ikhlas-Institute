@@ -1,0 +1,6 @@
+{
+  "name": "Al-Ikhlas Islamic Institute",
+  "description": "Official website for Al-Ikhlas Islamic Institute in Lahore, Pakistan. Dedicated to learning, understanding, and living the teachings of Islam.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

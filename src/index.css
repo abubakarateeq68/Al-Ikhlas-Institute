@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Jameel Noori Nastaleeq';
+  src: url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JameelNooriNastaliq';
+  src: url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    scroll-behavior: smooth;
+  }
+}
+
+.font-display {
+  font-family: 'Cinzel', Georgia, serif;
+}
+
+.font-serif-luxury {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-arabic {
+  font-family: 'Amiri', serif;
+}
+
+.font-urdu {
+  font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', 'Urdu Typesetting', serif !important;
+  line-height: 2.2 !important;
+  letter-spacing: 0;
+  word-spacing: 0.05em;
+  padding-top: 0.1em;
+  padding-bottom: 0.15em;
+}
+
+.font-urdu-title {
+  font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', serif !important;
+  line-height: 2 !important;
+  letter-spacing: 0;
+  word-spacing: 0.06em;
+  padding-top: 0.2em;
+  padding-bottom: 0.25em;
+  overflow: visible !important;
+}
+
+/* Fix for Urdu cutting off on mobile: ensure ample line-height and balanced font size */
+[dir="rtl"] {
+  font-family: 'Jameel Noori Nastaleeq', 'JameelNooriNastaliq', 'Noto Nastaliq Urdu', 'Amiri', serif;
+  line-height: 2.1;
+  word-break: normal;
+  overflow-wrap: break-word;
+  font-size: 1.06rem;
+}
+
+[dir="rtl"] .leading-tight,
+[dir="rtl"] .leading-snug,
+[dir="rtl"] .leading-none,
+[dir="rtl"] .leading-normal,
+[dir="rtl"] .leading-relaxed {
+  line-height: 2.1 !important;
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  line-height: 2 !important;
+  padding-top: 0.15rem;
+  padding-bottom: 0.25rem;
+  overflow: visible !important;
+}
+
+/* Tastefully elevate Urdu text sizes so Nastaliq is comfortable and clear, not too small or oversized */
+[dir="rtl"] .text-xs {
+  font-size: 0.88rem !important;
+  line-height: 2 !important;
+}
+
+[dir="rtl"] .text-sm {
+  font-size: 1.02rem !important;
+  line-height: 2.1 !important;
+}
+
+[dir="rtl"] .text-base {
+  font-size: 1.15rem !important;
+  line-height: 2.2 !important;
+}
+
+[dir="rtl"] .text-lg {
+  font-size: 1.28rem !important;
+  line-height: 2.2 !important;
+}
+
+[dir="rtl"] .text-xl {
+  font-size: 1.45rem !important;
+  line-height: 2.1 !important;
+}
+
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] li,
+[dir="rtl"] label {
+  line-height: 2.1;
+  overflow: visible;
+}
+
+[dir="rtl"] button,
+[dir="rtl"] a {
+  overflow: visible;
+}
+
+@media (max-width: 640px) {
+  [dir="rtl"] {
+    font-size: 1.02rem;
+  }
+  [dir="rtl"] h1 {
+    font-size: 2.05rem !important;
+    line-height: 2.2 !important;
+  }
+  [dir="rtl"] h2 {
+    font-size: 1.7rem !important;
+    line-height: 2.1 !important;
+  }
+  [dir="rtl"] h3 {
+    font-size: 1.38rem !important;
+    line-height: 2 !important;
+  }
+  [dir="rtl"] p {
+    font-size: 1.05rem;
+    line-height: 2.1 !important;
+  }
+  [dir="rtl"] .text-xs {
+    font-size: 0.84rem !important;
+  }
+  [dir="rtl"] .text-sm {
+    font-size: 0.98rem !important;
+  }
+  [dir="rtl"] .text-base {
+    font-size: 1.08rem !important;
+  }
+  [dir="rtl"] button span,
+  [dir="rtl"] a span {
+    line-height: 1.9;
+  }
+}
+
+.font-body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Luxury Metallic Gold Text Gradients */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5E1A4 35%, #C59B27 70%, #996515 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-bright {
+  background: linear-gradient(135deg, #ECC876 0%, #FFF3D1 50%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-emerald-gradient {
+  background: linear-gradient(135deg, #072B1B 0%, #0D5C3A 50%, #157E52 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Luxury Glassmorphism and Borders */
+.luxury-glass {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 151, 56, 0.22);
+  box-shadow: 0 10px 30px -10px rgba(7, 43, 27, 0.07), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+.luxury-glass-dark {
+  background: rgba(7, 43, 27, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 151, 56, 0.35);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4), 0 0 20px rgba(201, 151, 56, 0.1) inset;
+}
+
+.luxury-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(201, 151, 56, 0.18);
+  box-shadow: 0 4px 20px -4px rgba(7, 43, 27, 0.05);
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.luxury-card:hover {
+  border-color: rgba(201, 151, 56, 0.55);
+  box-shadow: 0 20px 35px -10px rgba(13, 92, 58, 0.08), 0 0 25px rgba(201, 151, 56, 0.15);
+  transform: translateY(-3px);
+}
+
+.luxury-card:hover::before {
+  opacity: 1;
+}
+
+/* Subtle decorative Islamic geometric pattern */
+.bg-islamic-pattern {
+  background-image: radial-gradient(rgba(13, 92, 58, 0.04) 1.5px, transparent 1.5px),
+                    radial-gradient(rgba(201, 151, 56, 0.05) 1.5px, #FAF7F2 1.5px);
+  background-size: 36px 36px;
+  background-position: 0 0, 18px 18px;
+}
+
+.bg-islamic-pattern-dark {
+  background-image: radial-gradient(rgba(201, 151, 56, 0.12) 1.5px, transparent 1.5px);
+  background-size: 32px 32px;
+}
+
+/* Subtle geometric star overlay */
+.islamic-lattice {
+  background-image: linear-gradient(30deg, rgba(201, 151, 56, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(201, 151, 56, 0.04) 87.5%, rgba(201, 151, 56, 0.04)),
+                    linear-gradient(150deg, rgba(201, 151, 56, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(201, 151, 56, 0.04) 87.5%, rgba(201, 151, 56, 0.04)),
+                    linear-gradient(60deg, rgba(13, 92, 58, 0.03) 25%, transparent 25.5%, transparent 75%, rgba(13, 92, 58, 0.03) 75%, rgba(13, 92, 58, 0.03)),
+                    linear-gradient(120deg, rgba(13, 92, 58, 0.03) 25%, transparent 25.5%, transparent 75%, rgba(13, 92, 58, 0.03) 75%, rgba(13, 92, 58, 0.03));
+  background-size: 80px 140px;
+}
+
+/* Luxury Gilded Accents */
+.gold-glow {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+}
+
+.gold-glow-sm {
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #04180F;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #C59B27, #0D5C3A);
+  border-radius: 9999px;
+  border: 2px solid #04180F;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ECC876, #14754B);
+}
