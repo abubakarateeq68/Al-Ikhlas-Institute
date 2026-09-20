@@ -52,9 +52,9 @@ interface AdminPortalProps {
 }
 
 export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }) => {
-  // Authentication State (Username & Password)
+  // Authentication State (Username & Password with persistent localStorage)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return sessionStorage.getItem('ikhlas_admin_auth') === 'true';
+    return localStorage.getItem('ikhlas_admin_auth') === 'true' || sessionStorage.getItem('ikhlas_admin_auth') === 'true';
   });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -185,8 +185,10 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
       const res = await verifyAdminLogin(username, password);
       if (res.success) {
         setIsAuthenticated(true);
+        localStorage.setItem('ikhlas_admin_auth', 'true');
         sessionStorage.setItem('ikhlas_admin_auth', 'true');
         if (res.user?.username) {
+          localStorage.setItem('ikhlas_admin_user', res.user.username);
           sessionStorage.setItem('ikhlas_admin_user', res.user.username);
         }
         setAuthError('');
@@ -202,7 +204,10 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('ikhlas_admin_auth');
+    localStorage.removeItem('ikhlas_admin_user');
     sessionStorage.removeItem('ikhlas_admin_auth');
+    sessionStorage.removeItem('ikhlas_admin_user');
     setCurrentPage('home');
     window.location.hash = '';
   };
@@ -418,17 +423,17 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
   // Render Login Lock Screen if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#041A10] via-[#072B1B] to-[#041A10] flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white/95 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border-2 border-[#ECC876]/60 shadow-2xl space-y-6 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center mx-auto border border-[#ECC876]/40 shadow-lg">
-            <Lock className="w-8 h-8" />
+      <div className="min-h-screen bg-gradient-to-br from-[#041A10] via-[#072B1B] to-[#041A10] flex items-center justify-center p-3 sm:p-4">
+        <div className="max-w-md w-full bg-white/95 backdrop-blur-xl rounded-3xl p-5 sm:p-8 border-2 border-[#ECC876]/60 shadow-2xl space-y-5 sm:space-y-6 text-center">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center mx-auto border border-[#ECC876]/40 shadow-lg">
+            <Lock className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
 
           <div className="space-y-1">
-            <h2 className="text-2xl font-bold text-[#072B1B] font-display">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#072B1B] font-display">
               الْإِخْلَاص ایڈمن پورٹل
             </h2>
-            <p className="text-xs text-slate-500 font-semibold tracking-wider uppercase">
+            <p className="text-[11px] sm:text-xs text-slate-500 font-semibold tracking-wider uppercase">
               Admin Access Only • Restricted Area
             </p>
           </div>
@@ -545,35 +550,46 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
     <div className="min-h-screen bg-[#FAF7F2] text-slate-800">
       
       {/* 1. TOP ADMIN BAR */}
-      <header className="bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] text-white py-3.5 px-4 sm:px-8 border-b border-[#ECC876]/30 sticky top-0 z-40 shadow-md">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <header className="bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] text-white py-3 px-3 sm:px-8 border-b border-[#ECC876]/30 sticky top-0 z-40 shadow-md">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
           
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0D5C3A] text-[#ECC876] flex items-center justify-center border border-[#ECC876]/40 shadow-sm shrink-0">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="font-bold text-white text-base sm:text-lg">
-                  الْإِخْلَاص ایڈمن پورٹل (Admin Portal)
-                </h1>
-                <span className="text-[10px] bg-[#ECC876] text-[#041A10] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">
-                  Secret View
-                </span>
+          <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#0D5C3A] text-[#ECC876] flex items-center justify-center border border-[#ECC876]/40 shadow-sm shrink-0">
+                <ShieldCheck className="w-5 h-5" />
               </div>
-              <p className="text-[11px] text-emerald-200/80">
-                داخلہ فارم مینجمنٹ و کورس پوسٹرز اپلوڈر
-              </p>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h1 className="font-bold text-white text-sm sm:text-lg">
+                    الْإِخْلَاص ایڈمن پورٹل
+                  </h1>
+                  <span className="text-[9px] sm:text-[10px] bg-[#ECC876] text-[#041A10] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider">
+                    Admin
+                  </span>
+                </div>
+                <p className="text-[10px] sm:text-[11px] text-emerald-200/80">
+                  داخلہ فارم مینجمنٹ و کورس پوسٹرز اپلوڈر
+                </p>
+              </div>
             </div>
+
+            {/* Mobile Logout Quick Button */}
+            <button
+              onClick={handleLogout}
+              className="sm:hidden p-2 rounded-xl bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs"
+              title="لاگ آؤٹ"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-between sm:justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-white/10">
             {/* PWA Install Button */}
             {!isAppInstalled && (
               <button
                 onClick={handleInstallApp}
-                className="py-2 px-3 rounded-xl bg-gradient-to-r from-[#ECC876] via-[#D4AF37] to-[#B8860B] hover:brightness-110 text-[#041A10] text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl bg-gradient-to-r from-[#ECC876] via-[#D4AF37] to-[#B8860B] hover:brightness-110 text-[#041A10] text-[11px] sm:text-xs font-extrabold flex items-center gap-1 shadow-sm transition-all cursor-pointer"
                 title="اپنے موبائل یا لیپ ٹاپ پر ایڈمن ایپ انسٹال کریں"
               >
                 <Download className="w-3.5 h-3.5 text-[#041A10]" />
@@ -586,11 +602,11 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 loadAdmissions();
                 loadPosters();
               }}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC876] border border-[#ECC876]/30 text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
+              className="py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl bg-white/10 hover:bg-white/20 text-[#ECC876] border border-[#ECC876]/30 text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer"
               title="Refresh Data"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loadingAdmissions || loadingPosters ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">ریفریش</span>
+              <span>ریفریش</span>
             </button>
 
             <button
@@ -598,7 +614,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 setCurrentPage('home');
                 window.location.hash = '';
               }}
-              className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold flex items-center gap-1.5 border border-white/20 transition-all cursor-pointer"
+              className="py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] sm:text-xs font-semibold flex items-center gap-1.5 border border-white/20 transition-all cursor-pointer"
             >
               <ExternalLink className="w-3.5 h-3.5 text-[#ECC876]" />
               <span>ویب سائٹ دیکھیں</span>
@@ -606,7 +622,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
             <button
               onClick={handleLogout}
-              className="py-2 px-3 rounded-xl bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
+              className="hidden sm:flex py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold items-center gap-1.5 transition-all cursor-pointer shadow-xs"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>لاگ آؤٹ</span>
@@ -616,46 +632,46 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
       </header>
 
       {/* 2. TAB CONTROLS & STATS */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-5 sm:pt-8">
         
         {/* Tab Buttons */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200">
-          <div className="flex items-center gap-2 p-1.5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-5 border-b border-slate-200">
+          <div className="grid grid-cols-2 sm:flex items-center gap-1.5 sm:gap-2 p-1 bg-white rounded-2xl border border-slate-200 shadow-xs">
             <button
               onClick={() => setActiveTab('admissions')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
                 activeTab === 'admissions'
                   ? 'bg-gradient-to-r from-[#041A10] to-[#0D5C3A] text-[#F5E1A4] shadow-md'
                   : 'text-slate-600 hover:text-[#072B1B] hover:bg-slate-100'
               }`}
             >
-              <Users className="w-4 h-4" />
-              <span>داخلہ فارم کی تفصیلات ({admissions.length})</span>
+              <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              <span className="truncate">داخلہ فارمز ({admissions.length})</span>
             </button>
 
             <button
               onClick={() => setActiveTab('posters')}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 px-3 sm:px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer text-center ${
                 activeTab === 'posters'
                   ? 'bg-gradient-to-r from-[#041A10] to-[#0D5C3A] text-[#F5E1A4] shadow-md'
                   : 'text-slate-600 hover:text-[#072B1B] hover:bg-slate-100'
               }`}
             >
-              <Upload className="w-4 h-4 text-[#ECC876]" />
-              <span>نیا پوسٹر اپلوڈ کریں ({posters.length})</span>
+              <Upload className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#ECC876] shrink-0" />
+              <span className="truncate">نیا پوسٹر ({posters.length})</span>
             </button>
           </div>
 
           {/* Quick Stats Pill & Supabase Sync Indicator */}
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-800 rounded-xl font-bold border border-emerald-200 shadow-2xs">
+          <div className="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-xl font-bold border border-emerald-200 shadow-2xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Supabase Live Sync</span>
+              <span>Live Sync</span>
             </span>
-            <span className="px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-xl font-bold border border-emerald-200">
+            <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-xl font-bold border border-emerald-200">
               کل داخلے: {admissions.length}
             </span>
-            <span className="px-3 py-1.5 bg-amber-100 text-amber-800 rounded-xl font-bold border border-amber-200">
+            <span className="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-xl font-bold border border-amber-200">
               زیرِ غور: {admissions.filter(a => a.status === 'pending').length}
             </span>
           </div>
@@ -684,7 +700,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
             )}
 
             {/* Search & Filter Bar */}
-            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center gap-3">
+            <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center gap-2.5 sm:gap-3">
               <div className="relative flex-1 w-full">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
@@ -696,11 +712,11 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 />
               </div>
 
-              <div className="flex items-center gap-2 w-full md:w-auto">
+              <div className="grid grid-cols-2 md:flex items-center gap-2 w-full md:w-auto">
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white text-slate-700 font-medium outline-none cursor-pointer"
+                  className="w-full md:w-auto px-2.5 sm:px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white text-slate-700 font-medium outline-none cursor-pointer"
                 >
                   <option value="all">تمام اسٹیٹس</option>
                   <option value="pending">زیرِ غور (Pending)</option>
@@ -711,7 +727,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 <select
                   value={programFilter}
                   onChange={(e) => setProgramFilter(e.target.value)}
-                  className="px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white text-slate-700 font-medium outline-none cursor-pointer"
+                  className="w-full md:w-auto px-2.5 sm:px-3 py-2.5 rounded-xl border border-slate-200 text-xs bg-white text-slate-700 font-medium outline-none cursor-pointer"
                 >
                   <option value="all">تمام کورسز</option>
                   <option value="tajweed">تجوید القرآن</option>
@@ -735,7 +751,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 <p className="text-xs text-slate-500">فلٹر تبدیل کر کے یا سرچ ختم کر کے دوبارہ دیکھیں۔</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3.5 sm:gap-4">
                 {filteredAdmissions.map((item) => {
                   const statusColors: Record<string, string> = {
                     pending: 'bg-amber-100 text-amber-900 border-amber-300',
@@ -753,21 +769,21 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                   return (
                     <div
                       key={item.id}
-                      className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-[#ECC876] shadow-xs hover:shadow-md transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                      className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 hover:border-[#ECC876] shadow-xs hover:shadow-md transition-all flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4"
                     >
                       {/* Left Details */}
-                      <div className="space-y-1.5 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                      <div className="space-y-2 flex-1 w-full">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                          <span className="font-mono text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                             {item.ref_number}
                           </span>
-                          <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${currentStatusClass}`}>
+                          <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${currentStatusClass}`}>
                             {item.status === 'pending' && 'زیرِ غور (Pending)'}
                             {item.status === 'contacted' && 'رابطہ ہو گیا (Contacted)'}
                             {item.status === 'approved' && 'منظور شدہ (Approved)'}
                             {!['pending', 'contacted', 'approved'].includes(item.status) && item.status}
                           </span>
-                          <span className="text-[11px] text-slate-400">
+                          <span className="text-[10px] sm:text-[11px] text-slate-400">
                             {new Date(item.created_at).toLocaleDateString('ur-PK', {
                               year: 'numeric',
                               month: 'short',
@@ -776,7 +792,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                           <h4 className="font-bold text-[#072B1B] text-base sm:text-lg">
                             {item.full_name}
                           </h4>
@@ -788,8 +804,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                           </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 pt-1">
-                          <span className="bg-[#FAF7F2] px-2.5 py-1 rounded-md border border-[#C99738]/20 font-semibold text-[#072B1B]">
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-600 pt-0.5">
+                          <span className="bg-[#FAF7F2] px-2 py-0.5 rounded-md border border-[#C99738]/20 font-semibold text-[#072B1B]">
                             کورس: <strong>{programLabels[item.program] || item.program}</strong>
                           </span>
                           {item.hifz_session && (
@@ -806,56 +822,58 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                       </div>
 
                       {/* Right Action Buttons */}
-                      <div className="flex items-center gap-2 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-slate-100">
+                      <div className="flex flex-wrap items-center justify-between sm:justify-end gap-2 w-full lg:w-auto border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-100">
                         {/* Status Change Selector */}
                         <select
                           value={item.status}
                           onChange={(e) => handleStatusUpdate(item.id, e.target.value)}
-                          className="px-2.5 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 font-bold text-slate-700 outline-none cursor-pointer"
+                          className="flex-1 sm:flex-none px-2.5 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 font-bold text-slate-700 outline-none cursor-pointer"
                         >
                           <option value="pending">زیرِ غور (Pending)</option>
                           <option value="contacted">رابطہ مکمل (Contacted)</option>
                           <option value="approved">داخلہ منظور (Approved)</option>
                         </select>
 
-                        {/* WhatsApp Direct */}
-                        <a
-                          href={whatsappLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-2.5 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#072B1B] border border-[#25D366]/30 transition-colors cursor-pointer"
-                          title="WhatsApp Student"
-                        >
-                          <WhatsAppIcon size={16} className="text-[#25D366]" />
-                        </a>
-
-                        {/* Call Direct */}
-                        <a
-                          href={`tel:${item.phone}`}
-                          className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-colors"
-                          title="Call Phone"
-                        >
-                          <Phone className="w-4 h-4 text-emerald-700" />
-                        </a>
-
                         {/* View Full Student Details Modal */}
                         <button
                           onClick={() => setSelectedAdmission(item)}
-                          className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#041A10] to-[#0D5C3A] hover:brightness-110 text-[#F5E1A4] border border-[#ECC876]/40 text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+                          className="px-3 py-2 rounded-xl bg-gradient-to-r from-[#041A10] to-[#0D5C3A] hover:brightness-110 text-[#F5E1A4] border border-[#ECC876]/40 text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
                           title="طالب علم کی تمام تفصیلات دیکھیں"
                         >
                           <Eye className="w-3.5 h-3.5 text-[#ECC876]" />
-                          <span>تفصیلات (Details)</span>
+                          <span>تفصیلات</span>
                         </button>
 
-                        {/* Delete Button */}
-                        <button
-                          onClick={() => handleDeleteAdmission(item.id, item.full_name)}
-                          className="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-colors cursor-pointer"
-                          title="Delete Record"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        <div className="flex items-center gap-1.5">
+                          {/* WhatsApp Direct */}
+                          <a
+                            href={whatsappLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-xl bg-[#25D366]/15 hover:bg-[#25D366]/25 text-[#072B1B] border border-[#25D366]/30 transition-colors cursor-pointer"
+                            title="WhatsApp Student"
+                          >
+                            <WhatsAppIcon size={16} className="text-[#25D366]" />
+                          </a>
+
+                          {/* Call Direct */}
+                          <a
+                            href={`tel:${item.phone}`}
+                            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition-colors"
+                            title="Call Phone"
+                          >
+                            <Phone className="w-4 h-4 text-emerald-700" />
+                          </a>
+
+                          {/* Delete Button */}
+                          <button
+                            onClick={() => handleDeleteAdmission(item.id, item.full_name)}
+                            className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 transition-colors cursor-pointer"
+                            title="Delete Record"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   );
@@ -872,40 +890,40 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
           <div className="py-6 space-y-10">
             
             {/* Upload Form Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border-2 border-[#ECC876]/60 shadow-lg space-y-6">
+            <div className="bg-white rounded-3xl p-4 sm:p-8 border-2 border-[#ECC876]/60 shadow-lg space-y-5 sm:space-y-6">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center border border-[#ECC876]/40 shadow-xs">
-                    <Upload className="w-5 h-5" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center border border-[#ECC876]/40 shadow-xs shrink-0">
+                    <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-[#072B1B]">
-                      نیا کورس پوسٹر اپلوڈ کریں (Upload & Publish Poster)
+                    <h3 className="text-base sm:text-lg font-bold text-[#072B1B]">
+                      نیا کورس پوسٹر اپلوڈ کریں
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      یہاں اپلوڈ کیا گیا پوسٹر فوری طور پر ویب سائٹ کے "Our Courses" سیکشن میں نظر آئے گا۔
+                    <p className="text-[11px] sm:text-xs text-slate-500">
+                      یہاں اپلوڈ کیا گیا پوسٹر فوری طور پر ویب سائٹ کے ہوم پیج اور کورسز سیکشن میں نظر آئے گا۔
                     </p>
                   </div>
                 </div>
 
-                <Sparkles className="w-5 h-5 text-[#ECC876]" />
+                <Sparkles className="w-5 h-5 text-[#ECC876] shrink-0" />
               </div>
 
               {uploadSuccess && (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-2.5 text-emerald-800 text-xs font-bold">
+                <div className="p-3.5 sm:p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-2.5 text-emerald-800 text-xs font-bold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>{uploadSuccess}</span>
                 </div>
               )}
 
               {uploadError && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-2.5 text-red-800 text-xs font-bold">
+                <div className="p-3.5 sm:p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-2.5 text-red-800 text-xs font-bold">
                   <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
                   <span>{uploadError}</span>
                 </div>
               )}
 
-              <form onSubmit={handlePublishPoster} className="space-y-6">
+              <form onSubmit={handlePublishPoster} className="space-y-5 sm:space-y-6">
                 
                 {/* Image Upload Area */}
                 <div>
@@ -917,9 +935,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                     {/* File Picker Box */}
                     <div 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex-1 w-full p-6 border-2 border-dashed border-[#C99738]/50 hover:border-[#072B1B] rounded-2xl bg-[#FAF7F2] hover:bg-slate-50 transition-all cursor-pointer text-center space-y-2 flex flex-col items-center justify-center"
+                      className="flex-1 w-full p-4 sm:p-6 border-2 border-dashed border-[#C99738]/50 hover:border-[#072B1B] rounded-2xl bg-[#FAF7F2] hover:bg-slate-50 transition-all cursor-pointer text-center space-y-1.5 sm:space-y-2 flex flex-col items-center justify-center"
                     >
-                      <ImageIcon className="w-8 h-8 text-[#C99738]" />
+                      <ImageIcon className="w-7 h-7 sm:w-8 sm:h-8 text-[#C99738]" />
                       <p className="text-xs font-bold text-[#072B1B]">
                         تصویر منتخب کرنے کے لیے یہاں کلک کریں
                       </p>
@@ -937,7 +955,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
                     {/* Image Preview Box */}
                     {posterPreview && (
-                      <div className="relative w-36 h-48 rounded-2xl overflow-hidden border-2 border-[#ECC876] shadow-md shrink-0 bg-slate-900">
+                      <div className="relative w-32 sm:w-36 h-44 sm:h-48 rounded-2xl overflow-hidden border-2 border-[#ECC876] shadow-md shrink-0 bg-slate-900 mx-auto sm:mx-0">
                         <img 
                           src={posterPreview} 
                           alt="Poster Preview" 
@@ -1148,25 +1166,25 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
       {/* 3. ADMISSION DETAIL MODAL */}
       {selectedAdmission && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-xs animate-fadeIn"
           onClick={() => setSelectedAdmission(null)}
         >
           <div 
-            className="max-w-2xl w-full bg-white rounded-3xl p-6 sm:p-8 border border-[#C99738]/40 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto"
+            className="max-w-2xl w-full bg-white rounded-3xl p-4 sm:p-8 border border-[#C99738]/40 shadow-2xl space-y-5 sm:space-y-6 max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-slate-200">
+            <div className="flex items-start justify-between pb-3 sm:pb-4 border-b border-slate-200 gap-2">
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] text-[#072B1B] border border-[#C99738]/40">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="font-mono text-[11px] sm:text-xs font-bold px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] text-[#072B1B] border border-[#C99738]/40">
                     ریفرنس: {selectedAdmission.ref_number}
                   </span>
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
                     اسٹیٹس: {selectedAdmission.status}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-[#072B1B] pt-1">
+                <h3 className="text-lg sm:text-xl font-bold text-[#072B1B] pt-0.5">
                   {selectedAdmission.full_name} کی مکمل تفصیلات
                 </h3>
                 <p className="text-xs text-slate-400 flex items-center gap-1">
@@ -1296,13 +1314,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
             </div>
 
             {/* Modal Actions */}
-            <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-600 font-bold">اسٹیٹس تبدیل کریں:</span>
+            <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="flex items-center justify-between sm:justify-start gap-2">
+                <span className="text-xs text-slate-600 font-bold whitespace-nowrap">اسٹیٹس:</span>
                 <select
                   value={selectedAdmission.status}
                   onChange={(e) => handleStatusUpdate(selectedAdmission.id, e.target.value)}
-                  className="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white font-bold cursor-pointer outline-none focus:border-[#0D5C3A]"
+                  className="flex-1 sm:flex-none px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white font-bold cursor-pointer outline-none focus:border-[#0D5C3A]"
                 >
                   <option value="pending">زیرِ غور (Pending)</option>
                   <option value="contacted">رابطہ مکمل (Contacted)</option>
@@ -1310,30 +1328,30 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 </select>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="grid grid-cols-3 sm:flex items-center gap-2">
                 <a
                   href={`https://wa.me/${selectedAdmission.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
                     `السلام علیکم ${selectedAdmission.full_name}! الْإِخْلَاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${selectedAdmission.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer"
+                  className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer text-center"
                 >
                   <WhatsAppIcon size={16} />
-                  <span>واٹس ایپ چیٹ</span>
+                  <span className="truncate">واٹس ایپ</span>
                 </a>
                 
                 <a
                   href={`tel:${selectedAdmission.phone}`}
-                  className="px-4 py-2.5 rounded-xl bg-[#072B1B] hover:bg-[#0D5C3A] text-[#F5E1A4] font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
+                  className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-[#072B1B] hover:bg-[#0D5C3A] text-[#F5E1A4] font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer text-center"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#ECC876]" />
-                  <span>کال کریں</span>
+                  <span className="truncate">کال کریں</span>
                 </a>
 
                 <button
                   onClick={() => setSelectedAdmission(null)}
-                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all cursor-pointer"
+                  className="px-2.5 sm:px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all cursor-pointer text-center"
                 >
                   بند کریں
                 </button>
