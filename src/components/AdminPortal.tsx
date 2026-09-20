@@ -39,6 +39,8 @@ import {
   deleteCourse, 
   toggleCourseActive,
   verifyAdminLogin,
+  supabase,
+  isSupabaseConfigured,
   LiveCourseUpdate 
 } from '../lib/supabase.ts';
 
@@ -64,6 +66,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
   // Admissions Data State
   const [admissions, setAdmissions] = useState<AdmissionRecord[]>([]);
   const [loadingAdmissions, setLoadingAdmissions] = useState(false);
+  const [admissionsError, setAdmissionsError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [programFilter, setProgramFilter] = useState('all');
@@ -130,27 +133,57 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
     window.location.hash = '';
   };
 
-  // Load Admissions
+  // Load Admissions directly from Supabase
   const loadAdmissions = async () => {
     setLoadingAdmissions(true);
-    const data = await fetchAdmissions();
-    setAdmissions(data);
-    setLoadingAdmissions(false);
+    setAdmissionsError(null);
+    try {
+      const data = await fetchAdmissions();
+      setAdmissions(data);
+    } catch (err: any) {
+      console.error('[loadAdmissions error]:', err);
+      setAdmissionsError(err?.message || 'Supabase سے ڈیٹا لانے میں دشواری پیش آئی۔');
+    } finally {
+      setLoadingAdmissions(false);
+    }
   };
 
-  // Load Published Posters
+  // Load Published Posters directly from Supabase
   const loadPosters = async () => {
     setLoadingPosters(true);
-    const data = await fetchLiveCourseUpdates();
-    // Filter items with posters or show all updates
-    setPosters(data);
-    setLoadingPosters(false);
+    try {
+      const data = await fetchLiveCourseUpdates();
+      setPosters(data);
+    } catch (err) {
+      console.error('[loadPosters error]:', err);
+    } finally {
+      setLoadingPosters(false);
+    }
   };
 
+  // Initial fetch and Realtime sync on admissions table
   useEffect(() => {
     if (isAuthenticated) {
       loadAdmissions();
       loadPosters();
+
+      // Setup Supabase Realtime channel for live admissions updates
+      if (isSupabaseConfigured && supabase) {
+        const admissionsChannel = supabase
+          .channel('realtime_admissions_changes')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'admissions' },
+            () => {
+              loadAdmissions();
+            }
+          )
+          .subscribe();
+
+        return () => {
+          supabase.removeChannel(admissionsChannel);
+        };
+      }
     }
   }, [isAuthenticated]);
 
@@ -268,6 +301,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
     }
   };
 
+  // Program labels mapping
+  const programLabels: Record<string, string> = {
+    tajweed: 'تجوید و ترتیل القرآن',
+    tafseer: 'فہم القرآن و تفسیر',
+    hifz: 'حفظ القرآن الکریم',
+    shortDarsNizami: 'مختصر درسِ نظامی'
+  };
+
   // Filtered Admissions List
   const filteredAdmissions = admissions.filter(item => {
     const query = searchQuery.toLowerCase().trim();
@@ -279,7 +320,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
       item.city_area?.toLowerCase().includes(query);
 
     const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
-    const matchesProgram = programFilter === 'all' || item.program === programFilter;
+    const matchesProgram = programFilter === 'all' || 
+      item.program === programFilter ||
+      item.program?.toLowerCase().includes(programFilter.toLowerCase());
 
     return matchesSearch && matchesStatus && matchesProgram;
   });
@@ -494,8 +537,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
             </button>
           </div>
 
-          {/* Quick Stats Pill */}
-          <div className="flex items-center gap-2 text-xs">
+          {/* Quick Stats Pill & Supabase Sync Indicator */}
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-800 rounded-xl font-bold border border-emerald-200 shadow-2xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Supabase Live Sync</span>
+            </span>
             <span className="px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-xl font-bold border border-emerald-200">
               کل داخلے: {admissions.length}
             </span>
@@ -511,6 +558,22 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
         {activeTab === 'admissions' && (
           <div className="py-6 space-y-6">
             
+            {/* Supabase Error Alert if any */}
+            {admissionsError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-800 text-xs flex items-center justify-between gap-3 shadow-xs">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                  <span>{admissionsError}</span>
+                </div>
+                <button
+                  onClick={loadAdmissions}
+                  className="px-3 py-1.5 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors cursor-pointer"
+                >
+                  دوبارہ کوشش کریں
+                </button>
+              </div>
+            )}
+
             {/* Search & Filter Bar */}
             <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center gap-3">
               <div className="relative flex-1 w-full">
@@ -618,8 +681,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
                         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 pt-1">
                           <span className="bg-[#FAF7F2] px-2.5 py-1 rounded-md border border-[#C99738]/20 font-semibold text-[#072B1B]">
-                            کورس: {item.program}
+                            کورس: <strong>{programLabels[item.program] || item.program}</strong>
                           </span>
+                          {item.hifz_session && (
+                            <span className="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md border border-emerald-200 text-[11px] font-bold">
+                              سیشن: {item.hifz_session}
+                            </span>
+                          )}
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3 text-[#C99738]" />
                             وقت: {item.preferred_timing}
