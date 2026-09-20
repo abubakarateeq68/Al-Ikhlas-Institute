@@ -112,6 +112,18 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, lang, setLang })
               </li>
               <li>
                 <button
+                  id="footer-nav-courses"
+                  onClick={() => handleNav('courses')}
+                  className={`text-slate-300 hover:text-[#ECC876] transition-colors focus:outline-none cursor-pointer flex items-center gap-1.5 group ${
+                    lang === 'ur' ? 'font-urdu text-sm' : ''
+                  }`}
+                >
+                  <span className="w-1 h-1 rounded-full bg-[#C99738] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span>{t.nav.courses}</span>
+                </button>
+              </li>
+              <li>
+                <button
                   id="footer-nav-learning"
                   onClick={() => handleNav('learning')}
                   className={`text-slate-300 hover:text-[#ECC876] transition-colors focus:outline-none cursor-pointer flex items-center gap-1.5 group ${

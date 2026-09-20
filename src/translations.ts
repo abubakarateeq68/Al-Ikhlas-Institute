@@ -14,6 +14,7 @@ export interface Translations {
   nav: {
     home: string;
     about: string;
+    courses: string;
     learning: string;
     admission: string;
     contact: string;
@@ -300,6 +301,32 @@ export interface Translations {
     mapBadge: string;
   };
 
+  // Courses Page
+  coursesPage: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    updatesBadge: string;
+    updatesTitle: string;
+    updatesSubtitle: string;
+    filterAll: string;
+    filterNew: string;
+    filterRegular: string;
+    filterShort: string;
+    applyNow: string;
+    inquireWhatsApp: string;
+    durationLabel: string;
+    scheduleLabel: string;
+    modeLabel: string;
+    keyFeatures: string;
+    newBadge: string;
+    upcomingBadge: string;
+    admissionsOpenBadge: string;
+    deadlineLabel: string;
+    startDateLabel: string;
+    noCoursesFound: string;
+  };
+
   // Footer
   footer: {
     motto: string;
@@ -326,6 +353,7 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: "Home",
       about: "About",
+      courses: "Our Courses",
       learning: "Learning",
       admission: "Admission Form",
       contact: "Contact",
@@ -719,6 +747,31 @@ export const translations: Record<Language, Translations> = {
       mapBadge: "Lahore, Punjab, Pakistan",
     },
 
+    coursesPage: {
+      badge: "Curriculum & Programs",
+      title: "Our Courses & Academic Programs",
+      subtitle: "Explore our comprehensive Islamic learning programs, newly launched batches, and timely course announcements.",
+      updatesBadge: "Latest Announcements",
+      updatesTitle: "New Courses & Live Updates",
+      updatesSubtitle: "Stay informed about newly announced batches, special workshops, and registration deadlines.",
+      filterAll: "All Courses",
+      filterNew: "New & Upcoming",
+      filterRegular: "Regular Programs",
+      filterShort: "Short Courses",
+      applyNow: "Apply For Admission",
+      inquireWhatsApp: "Inquire on WhatsApp",
+      durationLabel: "Duration",
+      scheduleLabel: "Schedule",
+      modeLabel: "Format",
+      keyFeatures: "Key Highlights",
+      newBadge: "New Course",
+      upcomingBadge: "Upcoming",
+      admissionsOpenBadge: "Admissions Open",
+      deadlineLabel: "Enrollment Deadline",
+      startDateLabel: "Starting Date",
+      noCoursesFound: "No courses found matching this category.",
+    },
+
     footer: {
       motto: "“Learning. Character. Faith.”",
       desc: "Dedicated to learning, understanding, and living the teachings of Islam. Providing a peaceful and welcoming environment for personal growth and beneficial knowledge.",
@@ -743,6 +796,7 @@ export const translations: Record<Language, Translations> = {
     nav: {
       home: "صفحۂ اول",
       about: "ہمارے بارے میں",
+      courses: "ہمارے کورسز",
       learning: "تعلیم و تدریس",
       admission: "داخلہ فارم",
       contact: "رابطہ کریں",
@@ -1134,6 +1188,31 @@ export const translations: Record<Language, Translations> = {
       mapTitle: "مقام: لاہور، پاکستان",
       mapSubtitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ • لاہور اور گردونواح کے تمام طلبہ و خاندانوں کی خدمت کے لیے",
       mapBadge: "لاہور، پنجاب، پاکستان",
+    },
+
+    coursesPage: {
+      badge: "نصاب و تعلیمی پروگرامز",
+      title: "ہمارے کورسز اور تعلیمی شعبہ جات",
+      subtitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ کے باقاعدہ و جدید کورسز، نئے تعلیمی سیشنز اور تازہ ترین اعلانات کی مکمل تفصیلات۔",
+      updatesBadge: "تازہ ترین اعلانات و اپڈیٹس",
+      updatesTitle: "نئے کورسز اور لائیو اپڈیٹس",
+      updatesSubtitle: "ہمارے ہر نئے شروع ہونے والے کورس، ورکشاپس اور داخلے کی آخری تاریخوں سے باخبر رہیں۔",
+      filterAll: "تمام کورسز",
+      filterNew: "نئے اور آنے والے",
+      filterRegular: "باقاعدہ کورسز",
+      filterShort: "مختصر کورسز",
+      applyNow: "داخلہ فارم پُر کریں",
+      inquireWhatsApp: "واٹس ایپ پر معلومات لیں",
+      durationLabel: "مدت",
+      scheduleLabel: "اوقات کار",
+      modeLabel: "طریقہ تدریس",
+      keyFeatures: "اہم خصوصیات",
+      newBadge: "نیا کورس",
+      upcomingBadge: "جلد شروع ہونے والا",
+      admissionsOpenBadge: "داخلے جاری ہیں",
+      deadlineLabel: "داخلے کی آخری تاریخ",
+      startDateLabel: "کلاسز کا آغاز",
+      noCoursesFound: "اس کیٹیگری میں فی الحال کوئی کورس دستیاب نہیں ہے۔",
     },
 
     footer: {

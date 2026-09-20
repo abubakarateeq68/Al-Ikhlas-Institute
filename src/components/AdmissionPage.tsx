@@ -19,13 +19,15 @@ import {
 import { PageView, Language, AdmissionFormData } from '../types.ts';
 import { IslamicStarIcon, GeometricDivider, SubtleBismillahOrnament } from './IslamicMotif.tsx';
 import { translations } from '../translations.ts';
+import { submitAdmissionToSupabase, isSupabaseConfigured } from '../lib/supabase.ts';
 
 interface AdmissionPageProps {
   lang: Language;
   setCurrentPage: (page: PageView) => void;
+  selectedProgram?: string;
 }
 
-export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPage }) => {
+export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPage, selectedProgram }) => {
   const t = translations[lang];
 
   const initialFormState: AdmissionFormData = {
@@ -37,7 +39,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     whatsapp: '',
     email: '',
     cityArea: '',
-    program: '',
+    program: selectedProgram || '',
     preferredTiming: 'flexible',
     hifzSession: 'session1',
     educationBackground: '',
@@ -54,6 +56,16 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     submittedAt: string;
   } | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Auto-fill program if navigated from Our Courses page
+  React.useEffect(() => {
+    if (selectedProgram) {
+      setFormData(prev => ({
+        ...prev,
+        program: selectedProgram
+      }));
+    }
+  }, [selectedProgram]);
 
   const generateRefNumber = () => {
     const randomDigits = Math.floor(1000 + Math.random() * 9000);
@@ -96,7 +108,7 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
 
@@ -107,23 +119,35 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      const now = new Date();
-      const dateString = now.toLocaleDateString(lang === 'ur' ? 'ur-PK' : 'en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
+    const refNumber = generateRefNumber();
+    const result = await submitAdmissionToSupabase(formData, refNumber);
 
-      setSubmittedData({
-        data: { ...formData },
-        refNumber: generateRefNumber(),
-        submittedAt: dateString
-      });
+    setIsSubmitting(false);
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 900);
+    if (!result.success) {
+      setFormError(
+        lang === 'ur'
+          ? `فارم بھیجنے میں مسئلہ پیش آیا: ${result.error || 'براہِ کرم دوبارہ کوشش فرمائیں۔'}`
+          : `Failed to submit application: ${result.error || 'Please try again.'}`
+      );
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+      return;
+    }
+
+    const now = new Date();
+    const dateString = now.toLocaleDateString(lang === 'ur' ? 'ur-PK' : 'en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    setSubmittedData({
+      data: { ...formData },
+      refNumber,
+      submittedAt: dateString
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleReset = () => {
@@ -140,6 +164,8 @@ export const AdmissionPage: React.FC<AdmissionPageProps> = ({ lang, setCurrentPa
     { value: 'tafseer', label: t.admission.programs.tafseer },
     { value: 'hifz', label: t.admission.programs.hifz },
     { value: 'shortDarsNizami', label: t.admission.programs.shortDarsNizami },
+    { value: 'ramadanIntensive', label: lang === 'ur' ? 'خصوصی رمضان تجوید ورکشاپ' : 'Special Ramadan Tajweed Workshop' },
+    { value: 'weekendFahm', label: lang === 'ur' ? 'وک اینڈ فہمِ قرآن و حدیث' : 'Weekend Fahm-ul-Quran & Hadith' },
     { value: 'fahmDeen', label: t.admission.programs.fahmDeen },
     { value: 'shortCourses', label: t.admission.programs.shortCourses },
     { value: 'weeklyDarsQuran', label: t.admission.programs.weeklyDarsQuran },

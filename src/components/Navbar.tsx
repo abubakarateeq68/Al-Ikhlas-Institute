@@ -38,6 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navItems: { label: string; id: PageView }[] = [
     { label: t.nav.home, id: 'home' },
     { label: t.nav.about, id: 'about' },
+    { label: t.nav.courses, id: 'courses' },
     { label: t.nav.learning, id: 'learning' },
     { label: t.nav.admission, id: 'admission' },
     { label: t.nav.contact, id: 'contact' },

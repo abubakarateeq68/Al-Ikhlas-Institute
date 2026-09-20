@@ -10,6 +10,7 @@ import { Navbar } from './components/Navbar.tsx';
 import { Footer } from './components/Footer.tsx';
 import { HomePage } from './components/HomePage.tsx';
 import { AboutPage } from './components/AboutPage.tsx';
+import { OurCoursesPage } from './components/OurCoursesPage.tsx';
 import { LearningPage } from './components/LearningPage.tsx';
 import { AdmissionPage } from './components/AdmissionPage.tsx';
 import { ContactPage } from './components/ContactPage.tsx';
@@ -18,6 +19,7 @@ import { translations } from './translations.ts';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageView>('home');
+  const [selectedProgram, setSelectedProgram] = useState<string | undefined>(undefined);
   const [lang, setLang] = useState<Language>('ur'); // Default in Urdu as requested by user
 
   useEffect(() => {
@@ -25,7 +27,10 @@ export default function App() {
     document.documentElement.lang = lang;
   }, [lang]);
 
-  const handlePageChange = (page: PageView) => {
+  const handlePageChange = (page: PageView, program?: string) => {
+    if (program) {
+      setSelectedProgram(program);
+    }
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -52,8 +57,9 @@ export default function App() {
       <main className="flex-1 pb-20 md:pb-0 overflow-x-hidden">
         {currentPage === 'home' && <HomePage setCurrentPage={handlePageChange} lang={lang} />}
         {currentPage === 'about' && <AboutPage setCurrentPage={handlePageChange} lang={lang} />}
+        {currentPage === 'courses' && <OurCoursesPage setCurrentPage={handlePageChange} lang={lang} />}
         {currentPage === 'learning' && <LearningPage setCurrentPage={handlePageChange} lang={lang} />}
-        {currentPage === 'admission' && <AdmissionPage setCurrentPage={handlePageChange} lang={lang} />}
+        {currentPage === 'admission' && <AdmissionPage setCurrentPage={handlePageChange} lang={lang} selectedProgram={selectedProgram} />}
         {currentPage === 'contact' && <ContactPage setCurrentPage={handlePageChange} lang={lang} />}
       </main>
 
