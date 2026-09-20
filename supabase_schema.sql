@@ -183,3 +183,46 @@ CREATE POLICY "Allow manage admissions"
     WITH CHECK (true);
 
 
+-- ========================================================================
+-- 6. ADMIN USERS TABLE (For Admin Portal Login Credentials)
+-- ========================================================================
+-- You can change, add, or edit usernames and passwords directly in
+-- Supabase Dashboard -> Table Editor -> admin_users
+CREATE TABLE IF NOT EXISTS public.admin_users (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    name TEXT DEFAULT 'Administrator',
+    role VARCHAR(50) DEFAULT 'super_admin',
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
+
+-- Allow reading admin users for login authentication
+DROP POLICY IF EXISTS "Allow read admin_users for authentication" ON public.admin_users;
+CREATE POLICY "Allow read admin_users for authentication"
+    ON public.admin_users
+    FOR SELECT
+    TO anon, authenticated
+    USING (is_active = true);
+
+-- Allow managing admin users
+DROP POLICY IF EXISTS "Allow manage admin_users" ON public.admin_users;
+CREATE POLICY "Allow manage admin_users"
+    ON public.admin_users
+    FOR ALL
+    TO anon, authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- Insert initial Admin User (Change username / password anytime in Table Editor)
+INSERT INTO public.admin_users (username, password, name, role, is_active)
+VALUES ('admin', 'ikhlas2026', 'Al-Ikhlas Admin', 'super_admin', true)
+ON CONFLICT (username) DO NOTHING;
+
+
+

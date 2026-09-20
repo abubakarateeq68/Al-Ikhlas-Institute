@@ -38,6 +38,7 @@ import {
   fetchLiveCourseUpdates, 
   deleteCourse, 
   toggleCourseActive,
+  verifyAdminLogin,
   LiveCourseUpdate 
 } from '../lib/supabase.ts';
 
@@ -55,6 +56,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   // Active Tab: 'admissions' | 'posters'
   const [activeTab, setActiveTab] = useState<'admissions' | 'posters'>('admissions');
@@ -91,25 +93,33 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Authentication Handler with Username & Password
-  const handleLogin = (e: React.FormEvent) => {
+  // Authentication Handler with Username & Password (verified via Supabase admin_users table or fallback)
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const expectedUsername = (import.meta.env.VITE_ADMIN_USERNAME || 'admin').trim().toLowerCase();
-    const expectedPassword = (import.meta.env.VITE_ADMIN_PASSWORD || import.meta.env.VITE_ADMIN_PASSCODE || 'ikhlas2026').trim();
+    if (!username.trim() || !password.trim()) {
+      setAuthError(lang === 'ur' ? 'براہ کرم یوزر نیم اور پاس ورڈ درج کریں۔' : 'Please enter both username and password.');
+      return;
+    }
 
-    if (
-      username.trim().toLowerCase() === expectedUsername &&
-      password.trim() === expectedPassword
-    ) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('ikhlas_admin_auth', 'true');
-      setAuthError('');
-    } else {
-      setAuthError(
-        lang === 'ur'
-          ? 'غلط یوزر نیم یا پاس ورڈ! براہ کرم درست معلومات درج کریں۔'
-          : 'Invalid username or password! Please try again.'
-      );
+    setIsLoggingIn(true);
+    setAuthError('');
+
+    try {
+      const res = await verifyAdminLogin(username, password);
+      if (res.success) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem('ikhlas_admin_auth', 'true');
+        if (res.user?.username) {
+          sessionStorage.setItem('ikhlas_admin_user', res.user.username);
+        }
+        setAuthError('');
+      } else {
+        setAuthError(res.error || (lang === 'ur' ? 'غلط یوزر نیم یا پاس ورڈ! دوبارہ کوشش کریں۔' : 'Invalid username or password! Please try again.'));
+      }
+    } catch (err: any) {
+      setAuthError(err?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -356,10 +366,20 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#0D5C3A] hover:brightness-110 text-[#F5E1A4] font-extrabold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+              disabled={isLoggingIn}
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#0D5C3A] hover:brightness-110 disabled:opacity-60 text-[#F5E1A4] font-extrabold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
             >
-              <Unlock className="w-4 h-4 text-[#ECC876]" />
-              <span>لاگ ان کریں (Sign In)</span>
+              {isLoggingIn ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin text-[#ECC876]" />
+                  <span>تصدیق ہو رہی ہے... (Verifying...)</span>
+                </>
+              ) : (
+                <>
+                  <Unlock className="w-4 h-4 text-[#ECC876]" />
+                  <span>لاگ ان کریں (Sign In)</span>
+                </>
+              )}
             </button>
           </form>
 

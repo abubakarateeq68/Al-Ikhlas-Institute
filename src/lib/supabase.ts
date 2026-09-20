@@ -382,3 +382,60 @@ export async function toggleCourseActive(
   }
 }
 
+/**
+ * Verify Admin Login credentials from Supabase 'admin_users' table.
+ * If the table exists in Supabase, it verifies against the database record.
+ * If the table is not created yet or network fails, it gracefully checks the env/default credentials.
+ */
+export async function verifyAdminLogin(
+  usernameInput: string,
+  passwordInput: string
+): Promise<{ success: boolean; user?: { username: string; name?: string }; error?: string }> {
+  const cleanUser = usernameInput.trim();
+  const cleanPass = passwordInput.trim();
+
+  const fallbackUser = (import.meta.env.VITE_ADMIN_USERNAME || 'admin').trim().toLowerCase();
+  const fallbackPass = (import.meta.env.VITE_ADMIN_PASSWORD || import.meta.env.VITE_ADMIN_PASSCODE || 'ikhlas2026').trim();
+
+  // 1. Check Supabase 'admin_users' table if configured
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('admin_users')
+        .select('*')
+        .ilike('username', cleanUser)
+        .limit(1);
+
+      if (!error && data && data.length > 0) {
+        const adminRecord = data[0];
+        if (adminRecord.password === cleanPass) {
+          return {
+            success: true,
+            user: { username: adminRecord.username, name: adminRecord.name || 'Admin' }
+          };
+        } else {
+          return {
+            success: false,
+            error: 'غلط پاس ورڈ درج کیا گیا ہے۔ براہ کرم درست پاس ورڈ لکھیں۔'
+          };
+        }
+      }
+    } catch (e) {
+      // If table doesn't exist yet, fall through to fallback check
+    }
+  }
+
+  // 2. Fallback check against env / default credentials
+  if (cleanUser.toLowerCase() === fallbackUser && cleanPass === fallbackPass) {
+    return {
+      success: true,
+      user: { username: cleanUser, name: 'Administrator' }
+    };
+  }
+
+  return {
+    success: false,
+    error: 'غلط یوزر نیم یا پاس ورڈ! براہ کرم درست معلومات درج کریں۔'
+  };
+}
+
