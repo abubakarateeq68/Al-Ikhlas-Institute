@@ -15,12 +15,28 @@ import { LearningPage } from './components/LearningPage.tsx';
 import { AdmissionPage } from './components/AdmissionPage.tsx';
 import { ContactPage } from './components/ContactPage.tsx';
 import { WhatsAppButton } from './components/WhatsAppButton.tsx';
+import { AdminPortal } from './components/AdminPortal.tsx';
 import { translations } from './translations.ts';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageView>('home');
   const [selectedProgram, setSelectedProgram] = useState<string | undefined>(undefined);
   const [lang, setLang] = useState<Language>('ur'); // Default in Urdu as requested by user
+
+  // Detect secret #admin or ?admin from URL
+  useEffect(() => {
+    const checkAdminRoute = () => {
+      const hash = window.location.hash.toLowerCase();
+      const search = window.location.search.toLowerCase();
+      if (hash === '#admin' || search.includes('admin')) {
+        setCurrentPage('admin');
+      }
+    };
+
+    checkAdminRoute();
+    window.addEventListener('hashchange', checkAdminRoute);
+    return () => window.removeEventListener('hashchange', checkAdminRoute);
+  }, []);
 
   useEffect(() => {
     document.documentElement.dir = lang === 'ur' ? 'rtl' : 'ltr';
@@ -31,11 +47,19 @@ export default function App() {
     if (program) {
       setSelectedProgram(program);
     }
+    if (page !== 'admin' && window.location.hash === '#admin') {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const t = translations[lang];
+
+  // Secret Admin Portal view (no public header, footer, or sticky buttons)
+  if (currentPage === 'admin') {
+    return <AdminPortal setCurrentPage={handlePageChange} lang={lang} />;
+  }
 
   return (
     <div 

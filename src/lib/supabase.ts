@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { AdmissionFormData } from '../types.ts';
+import { AdmissionFormData, AdmissionRecord } from '../types.ts';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -152,3 +152,233 @@ export async function fetchLiveCourseUpdates(): Promise<LiveCourseUpdate[]> {
     return [];
   }
 }
+
+/**
+ * Fetch ALL admissions for the Admin Portal
+ */
+export async function fetchAdmissions(): Promise<AdmissionRecord[]> {
+  if (!isSupabaseConfigured || !supabase) {
+    return [];
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('admissions')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('[Fetch Admissions Error]:', error);
+      return [];
+    }
+
+    return (data as AdmissionRecord[]) || [];
+  } catch (err) {
+    console.error('[Fetch Admissions Exception]:', err);
+    return [];
+  }
+}
+
+/**
+ * Update the status of an admission (e.g. 'pending', 'reviewed', 'contacted', 'approved')
+ */
+export async function updateAdmissionStatus(
+  id: string,
+  status: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('admissions')
+      .update({ status })
+      .eq('id', id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Failed to update status' };
+  }
+}
+
+/**
+ * Delete an admission record (e.g. spam or test entries)
+ */
+export async function deleteAdmission(
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('admissions')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Failed to delete record' };
+  }
+}
+
+/**
+ * Upload a course poster image to Supabase Storage 'course-posters' bucket
+ */
+export async function uploadCoursePoster(
+  file: File
+): Promise<{ success: boolean; url?: string; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const fileExt = file.name.split('.').pop() || 'png';
+    const cleanFileName = `poster_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+    const filePath = `posters/${cleanFileName}`;
+
+    const { error } = await supabase.storage
+      .from('course-posters')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if (error) {
+      console.error('[Storage Upload Error]:', error);
+      return { success: false, error: error.message };
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from('course-posters')
+      .getPublicUrl(filePath);
+
+    return {
+      success: true,
+      url: publicUrlData.publicUrl
+    };
+  } catch (err: any) {
+    console.error('[Upload Exception]:', err);
+    return { success: false, error: err?.message || 'File upload failed' };
+  }
+}
+
+/**
+ * Create a new course announcement with poster in 'course_updates' table
+ */
+export async function createCourseWithPoster(payload: {
+  title: string;
+  title_ur?: string;
+  poster_url: string;
+  badge?: string;
+  badge_ur?: string;
+  category?: string;
+  description?: string;
+  description_ur?: string;
+  start_date?: string;
+  deadline?: string;
+  timing?: string;
+  duration?: string;
+}): Promise<{ success: boolean; data?: any; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('course_updates')
+      .insert([
+        {
+          title: payload.title.trim(),
+          title_ur: (payload.title_ur || payload.title).trim(),
+          poster_url: payload.poster_url.trim(),
+          badge: payload.badge || 'New Batch',
+          badge_ur: payload.badge_ur || 'نیا کورس',
+          category: payload.category || 'new',
+          description: payload.description || '',
+          description_ur: payload.description_ur || '',
+          start_date: payload.start_date || null,
+          deadline: payload.deadline || null,
+          timing: payload.timing || null,
+          duration: payload.duration || null,
+          is_active: true
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('[Create Course Error]:', error);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+  } catch (err: any) {
+    console.error('[Create Course Exception]:', err);
+    return { success: false, error: err?.message || 'Failed to publish course' };
+  }
+}
+
+/**
+ * Delete a course update / poster
+ */
+export async function deleteCourse(
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('course_updates')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Failed to delete course' };
+  }
+}
+
+/**
+ * Toggle active status of a course poster
+ */
+export async function toggleCourseActive(
+  id: string,
+  isActive: boolean
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('course_updates')
+      .update({ is_active: isActive })
+      .eq('id', id);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || 'Failed to update status' };
+  }
+}
+

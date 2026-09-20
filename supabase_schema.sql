@@ -98,12 +98,13 @@ CREATE POLICY "Allow public read course updates"
     TO anon, authenticated
     USING (is_active = true);
 
--- Allow authenticated admin to insert/update course announcements
+-- Allow admin to insert, update, and delete course updates & posters
 DROP POLICY IF EXISTS "Allow authenticated manage course updates" ON public.course_updates;
-CREATE POLICY "Allow authenticated manage course updates"
+DROP POLICY IF EXISTS "Allow manage course updates" ON public.course_updates;
+CREATE POLICY "Allow manage course updates"
     ON public.course_updates
     FOR ALL
-    TO authenticated
+    TO anon, authenticated
     USING (true)
     WITH CHECK (true);
 
@@ -145,7 +146,7 @@ ON CONFLICT DO NOTHING;
 
 
 -- ========================================================================
--- 4. STORAGE BUCKET FOR COURSE POSTERS (Optional: To upload images)
+-- 4. STORAGE BUCKET FOR COURSE POSTERS (To upload images)
 -- ========================================================================
 -- This creates a public storage bucket named 'course-posters'
 INSERT INTO storage.buckets (id, name, public)
@@ -159,10 +160,26 @@ ON storage.objects FOR SELECT
 TO anon, authenticated
 USING (bucket_id = 'course-posters');
 
--- Allow uploading posters into bucket
+-- Allow uploading and managing posters in bucket
 DROP POLICY IF EXISTS "Public Upload Course Posters" ON storage.objects;
-CREATE POLICY "Public Upload Course Posters"
-ON storage.objects FOR INSERT
+DROP POLICY IF EXISTS "Public Manage Course Posters" ON storage.objects;
+CREATE POLICY "Public Manage Course Posters"
+ON storage.objects FOR ALL
 TO anon, authenticated
+USING (bucket_id = 'course-posters')
 WITH CHECK (bucket_id = 'course-posters');
+
+
+-- ========================================================================
+-- 5. ADMISSIONS MANAGEMENT POLICIES
+-- ========================================================================
+-- Allow admin to update status and delete admissions
+DROP POLICY IF EXISTS "Allow manage admissions" ON public.admissions;
+CREATE POLICY "Allow manage admissions"
+    ON public.admissions
+    FOR ALL
+    TO anon, authenticated
+    USING (true)
+    WITH CHECK (true);
+
 
