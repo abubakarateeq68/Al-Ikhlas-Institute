@@ -4,6 +4,7 @@ import {
   Lock, 
   Unlock, 
   Users, 
+  User,
   Image as ImageIcon, 
   Upload, 
   Search, 
@@ -16,6 +17,7 @@ import {
   AlertCircle, 
   RefreshCw, 
   Eye, 
+  EyeOff,
   X, 
   Plus, 
   ArrowLeft, 
@@ -45,11 +47,13 @@ interface AdminPortalProps {
 }
 
 export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }) => {
-  // Authentication State
+  // Authentication State (Username & Password)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return sessionStorage.getItem('ikhlas_admin_auth') === 'true';
   });
-  const [passcode, setPasscode] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
 
   // Active Tab: 'admissions' | 'posters'
@@ -87,16 +91,25 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Authentication Handler
+  // Authentication Handler with Username & Password
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const correctPasscode = import.meta.env.VITE_ADMIN_PASSCODE || 'ikhlas2026';
-    if (passcode.trim() === correctPasscode) {
+    const expectedUsername = (import.meta.env.VITE_ADMIN_USERNAME || 'admin').trim().toLowerCase();
+    const expectedPassword = (import.meta.env.VITE_ADMIN_PASSWORD || import.meta.env.VITE_ADMIN_PASSCODE || 'ikhlas2026').trim();
+
+    if (
+      username.trim().toLowerCase() === expectedUsername &&
+      password.trim() === expectedPassword
+    ) {
       setIsAuthenticated(true);
       sessionStorage.setItem('ikhlas_admin_auth', 'true');
       setAuthError('');
     } else {
-      setAuthError(lang === 'ur' ? 'غلط پاس ورڈ! دوبارہ کوشش کریں۔' : 'Incorrect passcode! Please try again.');
+      setAuthError(
+        lang === 'ur'
+          ? 'غلط یوزر نیم یا پاس ورڈ! براہ کرم درست معلومات درج کریں۔'
+          : 'Invalid username or password! Please try again.'
+      );
     }
   };
 
@@ -280,32 +293,73 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4 text-start">
+            {/* Username Field */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                ایڈمن پاس کوڈ (Admin Passcode):
+              <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>یوزر نیم (Username)</span>
+                <span className="text-[10px] text-slate-400 font-normal">Default: admin</span>
               </label>
-              <input
-                type="password"
-                value={passcode}
-                onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode..."
-                className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 outline-none text-sm transition-all"
-                autoFocus
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 start-0 ps-3.5 flex items-center pointer-events-none text-slate-400">
+                  <User className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="admin"
+                  autoComplete="username"
+                  className="w-full ps-10 pe-4 py-3 rounded-xl border-2 border-slate-200 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 outline-none text-sm transition-all"
+                  autoFocus
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Password Field */}
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center justify-between">
+                <span>پاس ورڈ (Password)</span>
+                <span className="text-[10px] text-slate-400 font-normal">Default: ikhlas2026</span>
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 start-0 ps-3.5 flex items-center pointer-events-none text-slate-400">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  className="w-full ps-10 pe-11 py-3 rounded-xl border-2 border-slate-200 focus:border-[#0D5C3A] focus:ring-2 focus:ring-[#0D5C3A]/20 outline-none text-sm transition-all"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 end-0 pe-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  tabIndex={-1}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             {authError && (
-              <p className="text-xs text-red-600 font-bold bg-red-50 p-2.5 rounded-xl border border-red-200 text-center">
-                {authError}
+              <p className="text-xs text-red-600 font-bold bg-red-50 p-2.5 rounded-xl border border-red-200 text-center flex items-center justify-center gap-1.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                <span>{authError}</span>
               </p>
             )}
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#0D5C3A] text-[#F5E1A4] font-extrabold text-sm shadow-md hover:brightness-110 transition-all cursor-pointer flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#0D5C3A] hover:brightness-110 text-[#F5E1A4] font-extrabold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
             >
               <Unlock className="w-4 h-4 text-[#ECC876]" />
-              <span>ان لاک کریں (Unlock Dashboard)</span>
+              <span>لاگ ان کریں (Sign In)</span>
             </button>
           </form>
 
