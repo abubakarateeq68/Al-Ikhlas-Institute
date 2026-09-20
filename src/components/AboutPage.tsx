@@ -19,8 +19,8 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, lang }) => {
-  const libraryImage = "/src/assets/images/learning_ambiance_1786878742181.jpg";
-  const heroImage = "/src/assets/images/institute_hero_visual_1786878730473.jpg";
+  const libraryImage = "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?q=80&w=1200&auto=format&fit=crop";
+  const heroImage = "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=1200&auto=format&fit=crop";
   const t = translations[lang];
 
   return (

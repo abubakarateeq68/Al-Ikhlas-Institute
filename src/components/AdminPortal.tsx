@@ -261,7 +261,12 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
       });
 
       if (!createRes.success) {
-        setUploadError(createRes.error || 'Failed to save course record');
+        const errMsg = createRes.error || 'Failed to save course record';
+        if (errMsg.toLowerCase().includes('row-level security') || errMsg.toLowerCase().includes('violates') || errMsg.toLowerCase().includes('policy')) {
+          setUploadError('تصویر کامیابی سے اسٹوریج میں اپلوڈ ہو گئی ہے، لیکن کورس ریکارڈ محفوظ نہیں ہو سکا کیونکہ Supabase میں course_updates ٹیبل پر RLS پالیسی ایکٹو نہیں ہے۔ براہِ کرم Supabase SQL Editor میں دی گئی کوئری ایک بار رن فرمائیں۔');
+        } else {
+          setUploadError(errMsg);
+        }
         setIsUploading(false);
         return;
       }

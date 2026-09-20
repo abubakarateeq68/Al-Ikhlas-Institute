@@ -299,7 +299,7 @@ export async function createCourseWithPoster(payload: {
   }
 
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('course_updates')
       .insert([
         {
@@ -317,16 +317,14 @@ export async function createCourseWithPoster(payload: {
           duration: payload.duration || null,
           is_active: true
         }
-      ])
-      .select()
-      .single();
+      ]);
 
     if (error) {
       console.error('[Create Course Error]:', error);
       return { success: false, error: error.message };
     }
 
-    return { success: true, data };
+    return { success: true };
   } catch (err: any) {
     console.error('[Create Course Exception]:', err);
     return { success: false, error: err?.message || 'Failed to publish course' };

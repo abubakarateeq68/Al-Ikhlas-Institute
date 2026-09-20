@@ -23,7 +23,7 @@ interface LearningPageProps {
 }
 
 export const LearningPage: React.FC<LearningPageProps> = ({ setCurrentPage, lang }) => {
-  const heroImage = "/src/assets/images/institute_hero_visual_1786878730473.jpg";
+  const heroImage = "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?q=80&w=1200&auto=format&fit=crop";
   const t = translations[lang];
 
   const handleNav = (page: PageView) => {
