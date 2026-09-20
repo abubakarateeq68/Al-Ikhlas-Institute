@@ -729,12 +729,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                           <Phone className="w-4 h-4 text-emerald-700" />
                         </a>
 
-                        {/* View Full Modal */}
+                        {/* View Full Student Details Modal */}
                         <button
                           onClick={() => setSelectedAdmission(item)}
-                          className="px-3 py-2 rounded-xl bg-[#072B1B] hover:bg-[#0D5C3A] text-white text-xs font-bold transition-colors cursor-pointer"
+                          className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#041A10] to-[#0D5C3A] hover:brightness-110 text-[#F5E1A4] border border-[#ECC876]/40 text-xs font-extrabold shadow-sm transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+                          title="طالب علم کی تمام تفصیلات دیکھیں"
                         >
-                          تفصیلات
+                          <Eye className="w-3.5 h-3.5 text-[#ECC876]" />
+                          <span>تفصیلات (Details)</span>
                         </button>
 
                         {/* Delete Button */}
@@ -1045,124 +1047,187 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div>
-                <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-[#FAF7F2] text-[#072B1B] border border-[#C99738]/30">
-                  {selectedAdmission.ref_number}
-                </span>
-                <h3 className="text-xl font-bold text-[#072B1B] mt-1">
-                  {selectedAdmission.full_name}
+            <div className="flex items-start justify-between pb-4 border-b border-slate-200">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold px-2.5 py-0.5 rounded-lg bg-[#FAF7F2] text-[#072B1B] border border-[#C99738]/40">
+                    ریفرنس: {selectedAdmission.ref_number}
+                  </span>
+                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    اسٹیٹس: {selectedAdmission.status}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-[#072B1B] pt-1">
+                  {selectedAdmission.full_name} کی مکمل تفصیلات
                 </h3>
+                <p className="text-xs text-slate-400 flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-[#C99738]" />
+                  <span>
+                    فارم جمع کروانے کی تاریخ: {new Date(selectedAdmission.created_at).toLocaleString('ur-PK', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </span>
+                </p>
               </div>
               <button
                 onClick={() => setSelectedAdmission(null)}
-                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600"
+                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+                title="بند کریں"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Details Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">والد یا سرپرست کا نام:</span>
-                <p className="font-bold text-slate-800 text-sm">{selectedAdmission.father_or_guardian_name}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">طالب علم کا پورا نام:</span>
+                <p className="font-extrabold text-[#072B1B] text-base">{selectedAdmission.full_name}</p>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">عمر اور جنس:</span>
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">والد یا سرپرست کا نام:</span>
+                <p className="font-extrabold text-slate-800 text-base">{selectedAdmission.father_or_guardian_name}</p>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">عمر اور جنس:</span>
                 <p className="font-bold text-slate-800 text-sm">
-                  {selectedAdmission.age} سال • {selectedAdmission.gender === 'male' ? 'مرد (Male)' : 'خاتون (Female)'}
+                  {selectedAdmission.age} سال • {selectedAdmission.gender === 'male' ? 'طالب علم (Male)' : 'طالبہ (Female)'}
                 </p>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">فون نمبر:</span>
-                <p className="font-bold text-slate-800 text-sm">{selectedAdmission.phone}</p>
-              </div>
-
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">واٹس ایپ نمبر:</span>
-                <p className="font-bold text-slate-800 text-sm">{selectedAdmission.whatsapp}</p>
-              </div>
-
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">شہر / علاقہ:</span>
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">شہر / رہائشی علاقہ:</span>
                 <p className="font-bold text-slate-800 text-sm">{selectedAdmission.city_area}</p>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">منتخب کورس:</span>
-                <p className="font-bold text-[#0D5C3A] text-sm">{selectedAdmission.program}</p>
+              <div className="p-3.5 bg-emerald-50/60 rounded-2xl border border-emerald-100 space-y-1">
+                <span className="text-emerald-800 font-bold">فون نمبر:</span>
+                <p className="font-mono font-extrabold text-slate-800 text-sm">
+                  <a href={`tel:${selectedAdmission.phone}`} className="hover:underline text-emerald-800">
+                    {selectedAdmission.phone}
+                  </a>
+                </p>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                <span className="text-slate-500 font-semibold">اوقات کار:</span>
+              <div className="p-3.5 bg-emerald-50/60 rounded-2xl border border-emerald-100 space-y-1">
+                <span className="text-emerald-800 font-bold">واٹس ایپ نمبر:</span>
+                <p className="font-mono font-extrabold text-slate-800 text-sm">
+                  <a 
+                    href={`https://wa.me/${selectedAdmission.whatsapp.replace(/[^0-9]/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:underline text-[#25D366]"
+                  >
+                    {selectedAdmission.whatsapp}
+                  </a>
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">ای میل ایڈریس:</span>
+                <p className="font-bold text-slate-800 text-sm">
+                  {selectedAdmission.email ? (
+                    <a href={`mailto:${selectedAdmission.email}`} className="text-blue-600 hover:underline">
+                      {selectedAdmission.email}
+                    </a>
+                  ) : (
+                    <span className="text-slate-400 font-normal">فراہم نہیں کیا گیا</span>
+                  )}
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-[#FAF7F2] rounded-2xl border border-[#C99738]/30 space-y-1">
+                <span className="text-[#072B1B] font-bold">منتخب کردہ کورس:</span>
+                <p className="font-extrabold text-[#0D5C3A] text-sm">
+                  {programLabels[selectedAdmission.program] || selectedAdmission.program}
+                </p>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 space-y-1">
+                <span className="text-slate-500 font-bold">کلاس کے پسندیدہ اوقات:</span>
                 <p className="font-bold text-slate-800 text-sm">{selectedAdmission.preferred_timing}</p>
               </div>
 
               {selectedAdmission.hifz_session && (
-                <div className="p-3 bg-slate-50 rounded-xl space-y-1">
-                  <span className="text-slate-500 font-semibold">حفظ سیشن:</span>
-                  <p className="font-bold text-slate-800 text-sm">{selectedAdmission.hifz_session}</p>
+                <div className="p-3.5 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-1">
+                  <span className="text-emerald-800 font-bold">حفظ القرآن کا مخصوص سیشن:</span>
+                  <p className="font-extrabold text-emerald-900 text-sm">{selectedAdmission.hifz_session}</p>
                 </div>
               )}
             </div>
 
-            {/* Additional Info */}
-            {selectedAdmission.education_background && (
-              <div className="p-3.5 bg-[#FAF7F2] rounded-xl border border-[#C99738]/20 text-xs space-y-1">
-                <span className="font-bold text-[#072B1B]">عصری تعلیمی قابلیت:</span>
-                <p className="text-slate-700">{selectedAdmission.education_background}</p>
-              </div>
-            )}
+            {/* Additional Academic / Islamic Background */}
+            <div className="space-y-3">
+              {selectedAdmission.education_background && (
+                <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#C99738]/20 text-xs space-y-1">
+                  <span className="font-extrabold text-[#072B1B] block">عصری تعلیمی قابلیت (School/College Education):</span>
+                  <p className="text-slate-700 font-medium leading-relaxed">{selectedAdmission.education_background}</p>
+                </div>
+              )}
 
-            {selectedAdmission.previous_islamic_study && (
-              <div className="p-3.5 bg-[#FAF7F2] rounded-xl border border-[#C99738]/20 text-xs space-y-1">
-                <span className="font-bold text-[#072B1B]">سابقہ دینی تعلیم:</span>
-                <p className="text-slate-700">{selectedAdmission.previous_islamic_study}</p>
-              </div>
-            )}
+              {selectedAdmission.previous_islamic_study && (
+                <div className="p-4 bg-[#FAF7F2] rounded-2xl border border-[#C99738]/20 text-xs space-y-1">
+                  <span className="font-extrabold text-[#072B1B] block">سابقہ دینی تعلیم (Previous Islamic Studies):</span>
+                  <p className="text-slate-700 font-medium leading-relaxed">{selectedAdmission.previous_islamic_study}</p>
+                </div>
+              )}
 
-            {selectedAdmission.additional_notes && (
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
-                <span className="font-bold text-slate-700">اضافی نوٹس یا سوالات:</span>
-                <p className="text-slate-700">{selectedAdmission.additional_notes}</p>
-              </div>
-            )}
+              {selectedAdmission.additional_notes && (
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-1">
+                  <span className="font-extrabold text-slate-700 block">اضافی نوٹس یا سوالات:</span>
+                  <p className="text-slate-700 font-medium leading-relaxed">{selectedAdmission.additional_notes}</p>
+                </div>
+              )}
+            </div>
 
             {/* Modal Actions */}
-            <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-500 font-bold">اسٹیٹس بدلیں:</span>
+                <span className="text-xs text-slate-600 font-bold">اسٹیٹس تبدیل کریں:</span>
                 <select
                   value={selectedAdmission.status}
                   onChange={(e) => handleStatusUpdate(selectedAdmission.id, e.target.value)}
-                  className="px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white font-bold"
+                  className="px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white font-bold cursor-pointer outline-none focus:border-[#0D5C3A]"
                 >
-                  <option value="pending">Pending</option>
-                  <option value="contacted">Contacted</option>
-                  <option value="approved">Approved</option>
+                  <option value="pending">زیرِ غور (Pending)</option>
+                  <option value="contacted">رابطہ مکمل (Contacted)</option>
+                  <option value="approved">داخلہ کنفرم (Approved)</option>
                 </select>
               </div>
 
               <div className="flex items-center gap-2">
                 <a
-                  href={`https://wa.me/${selectedAdmission.whatsapp.replace(/[^0-9]/g, '')}`}
+                  href={`https://wa.me/${selectedAdmission.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                    `السلام علیکم ${selectedAdmission.full_name}! الْإِخْلَاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${selectedAdmission.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-[#25D366] text-white font-bold text-xs flex items-center gap-1.5 shadow-xs"
+                  className="px-4 py-2.5 rounded-xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer"
                 >
                   <WhatsAppIcon size={16} />
                   <span>واٹس ایپ چیٹ</span>
                 </a>
+                
                 <a
                   href={`tel:${selectedAdmission.phone}`}
-                  className="px-4 py-2 rounded-xl bg-[#072B1B] text-white font-bold text-xs flex items-center gap-1.5"
+                  className="px-4 py-2.5 rounded-xl bg-[#072B1B] hover:bg-[#0D5C3A] text-[#F5E1A4] font-bold text-xs flex items-center gap-2 transition-all cursor-pointer"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#ECC876]" />
                   <span>کال کریں</span>
                 </a>
+
+                <button
+                  onClick={() => setSelectedAdmission(null)}
+                  className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all cursor-pointer"
+                >
+                  بند کریں
+                </button>
               </div>
             </div>
           </div>
