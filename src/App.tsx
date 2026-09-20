@@ -16,6 +16,7 @@ import { AdmissionPage } from './components/AdmissionPage.tsx';
 import { ContactPage } from './components/ContactPage.tsx';
 import { WhatsAppButton } from './components/WhatsAppButton.tsx';
 import { AdminPortal } from './components/AdminPortal.tsx';
+import { NewCoursePosterPopup } from './components/NewCoursePosterPopup.tsx';
 import { translations } from './translations.ts';
 
 export default function App() {
@@ -96,6 +97,11 @@ export default function App() {
 
       {/* Floating WhatsApp Quick Contact Button */}
       <WhatsAppButton lang={lang} />
+
+      {/* 24-Hour New Course Poster Announcement Popup */}
+      {currentPage === 'home' && (
+        <NewCoursePosterPopup setCurrentPage={handlePageChange} lang={lang} />
+      )}
 
       {/* Mobile Sticky Quick Action Bar - Royal Emerald & Gold */}
       <div className="md:hidden fixed bottom-3 left-3 right-3 z-40 bg-gradient-to-r from-[#041A10]/95 via-[#072B1B]/95 to-[#041A10]/95 backdrop-blur-xl text-white p-2 rounded-2xl shadow-[0_10px_35px_rgba(0,0,0,0.5)] border border-[#C99738]/40 flex items-center justify-between gap-1.5 ring-1 ring-[#C99738]/20">
