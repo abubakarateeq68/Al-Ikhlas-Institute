@@ -25,7 +25,9 @@ import {
   Sparkles,
   ExternalLink,
   CheckCircle2,
-  FileText
+  FileText,
+  Smartphone,
+  Download
 } from 'lucide-react';
 import { PageView, Language, AdmissionRecord } from '../types.ts';
 import { WhatsAppIcon } from './WhatsAppIcon.tsx';
@@ -59,6 +61,78 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  // PWA State (Scoped strictly to Admin Portal)
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+  const [isAppInstalled, setIsAppInstalled] = useState(false);
+  const [showInstallHelp, setShowInstallHelp] = useState(false);
+
+  // Dynamic PWA registration strictly for the Admin Portal
+  useEffect(() => {
+    // 1. Inject PWA Manifest dynamically for Admin Portal only
+    let manifestLink = document.getElementById('admin-pwa-manifest') as HTMLLinkElement | null;
+    if (!manifestLink) {
+      manifestLink = document.createElement('link');
+      manifestLink.id = 'admin-pwa-manifest';
+      manifestLink.rel = 'manifest';
+      manifestLink.href = '/admin-manifest.json';
+      document.head.appendChild(manifestLink);
+    }
+
+    // 2. Register Service Worker for Admin Portal PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/admin-sw.js').catch(err => {
+        console.warn('[Admin PWA SW Register Error]:', err);
+      });
+    }
+
+    // 3. Detect if already launched in standalone PWA app mode
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true;
+    if (isStandalone) {
+      setIsAppInstalled(true);
+    }
+
+    // 4. Listen for beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setIsInstallable(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    const handleAppInstalled = () => {
+      setIsAppInstalled(true);
+      setIsInstallable(false);
+      setDeferredPrompt(null);
+    };
+
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      // Remove admin manifest on leaving admin view so public site stays untouched
+      const link = document.getElementById('admin-pwa-manifest');
+      if (link) {
+        link.remove();
+      }
+    };
+  }, []);
+
+  const handleInstallApp = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === 'accepted') {
+        setIsAppInstalled(true);
+      }
+      setDeferredPrompt(null);
+      setIsInstallable(false);
+    } else {
+      setShowInstallHelp(true);
+    }
+  };
 
   // Active Tab: 'admissions' | 'posters'
   const [activeTab, setActiveTab] = useState<'admissions' | 'posters'>('admissions');
@@ -440,7 +514,16 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
             </button>
           </form>
 
-          <div className="pt-2 border-t border-slate-100">
+          <div className="pt-2 border-t border-slate-100 space-y-2.5">
+            <button
+              type="button"
+              onClick={handleInstallApp}
+              className="w-full py-2.5 px-3 rounded-xl bg-[#041A10]/5 hover:bg-[#041A10]/10 border border-[#C99738]/30 text-[#072B1B] font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs"
+            >
+              <Smartphone className="w-4 h-4 text-[#C99738]" />
+              <span>{isAppInstalled ? 'ایڈمن ایپ انسٹال شدہ ہے ✓' : '📲 ایڈمن ایپ انسٹال کریں (Install PWA App)'}</span>
+            </button>
+
             <button
               onClick={() => {
                 setCurrentPage('home');
@@ -486,6 +569,18 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
           {/* Navigation Controls */}
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            {/* PWA Install Button */}
+            {!isAppInstalled && (
+              <button
+                onClick={handleInstallApp}
+                className="py-2 px-3 rounded-xl bg-gradient-to-r from-[#ECC876] via-[#D4AF37] to-[#B8860B] hover:brightness-110 text-[#041A10] text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                title="اپنے موبائل یا لیپ ٹاپ پر ایڈمن ایپ انسٹال کریں"
+              >
+                <Download className="w-3.5 h-3.5 text-[#041A10]" />
+                <span>ایپ انسٹال کریں</span>
+              </button>
+            )}
+
             <button
               onClick={() => {
                 loadAdmissions();
@@ -1243,6 +1338,81 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                   بند کریں
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PWA Installation Help Modal (for iOS, Android without prompt, or Desktop) */}
+      {showInstallHelp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-5 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#072B1B] text-[#ECC876] flex items-center justify-center font-bold">
+                  <Smartphone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-[#072B1B] text-base">
+                    الْإِخْلَاص ایڈمن پورٹل ایپ انسٹال کریں
+                  </h3>
+                  <p className="text-[11px] text-slate-500">
+                    بغیر ویب سائٹ کھولے ہوم اسکرین سے براہِ راست ایڈمن پورٹل کھولیں
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowInstallHelp(false)}
+                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Android / Chrome Guide */}
+            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-emerald-950 text-xs">
+                <span className="w-5 h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[11px]">1</span>
+                <span>اینڈرائیڈ یا کروم براؤزر (Android / Chrome):</span>
+              </div>
+              <ul className="text-xs text-emerald-900 space-y-1.5 list-disc list-inside pr-1">
+                <li>کروم براؤزر کے اوپر دائیں کونے میں <strong>تھری ڈاٹس ( ⋮ Menu )</strong> پر کلک کریں۔</li>
+                <li>مینو میں سے <strong>"Install app"</strong> یا <strong>"Add to Home screen"</strong> منتخب کریں۔</li>
+                <li><strong>"Install"</strong> پر ٹیپ کریں، چند سیکنڈ میں ایڈمن ایپ آپ کی ہوم اسکرین پر آ جائے گی۔</li>
+              </ul>
+            </div>
+
+            {/* iPhone / Safari Guide */}
+            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-amber-950 text-xs">
+                <span className="w-5 h-5 rounded-full bg-amber-600 text-white flex items-center justify-center text-[11px]">2</span>
+                <span>آئی فون یا سفاری براؤزر (iPhone / Safari):</span>
+              </div>
+              <ul className="text-xs text-amber-900 space-y-1.5 list-disc list-inside pr-1">
+                <li>سفاری براؤزر کے نیچے <strong>شیئر بٹن (Share Icon ⎋)</strong> پر کلک کریں۔</li>
+                <li>نیچے اسکرول کر کے <strong>"Add to Home Screen"</strong> منتخب کریں۔</li>
+                <li>اوپر دائیں جانب <strong>"Add"</strong> پر کلک کریں۔ پورٹل ایپ آئیکن شامل ہو جائے گا۔</li>
+              </ul>
+            </div>
+
+            {/* Desktop / Computer Guide */}
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-slate-900 text-xs">
+                <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center text-[11px]">3</span>
+                <span>کمپیوٹر یا لیپ ٹاپ (Chrome / Edge PC):</span>
+              </div>
+              <p className="text-xs text-slate-700 leading-relaxed">
+                ایڈریس بار (جہاں ویب سائٹ کا لنک لکھا ہوتا ہے) کے بالکل دائیں جانب <strong>انسٹال آئیکن ( ⭳ Install )</strong> پر کلک کریں، یا براؤزر مینو سے <strong>"Install Al-Ikhlas Admin"</strong> پر کلک کریں۔
+              </p>
+            </div>
+
+            <div className="pt-2 flex justify-end">
+              <button
+                onClick={() => setShowInstallHelp(false)}
+                className="px-5 py-2.5 bg-[#072B1B] hover:bg-[#0D5C3A] text-[#F5E1A4] rounded-xl font-bold text-xs shadow-xs transition-all cursor-pointer"
+              >
+                سمجھ گیا / بند کریں
+              </button>
             </div>
           </div>
         </div>

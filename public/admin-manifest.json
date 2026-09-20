@@ -1,0 +1,33 @@
+{
+  "name": "الْإِخْلَاص ایڈمن پورٹل - Al-Ikhlas Admin",
+  "short_name": "Ikhlas Admin",
+  "description": "Admin Portal for Al-Ikhlas Islamic Institute Admissions & Course Updates",
+  "start_url": "/#admin",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#041A10",
+  "theme_color": "#041A10",
+  "lang": "ur",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
