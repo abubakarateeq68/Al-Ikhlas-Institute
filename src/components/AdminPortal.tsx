@@ -189,12 +189,21 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
   // Handle Admission Status Change
   const handleStatusUpdate = async (id: string, newStatus: string) => {
+    const previousAdmissions = [...admissions];
+    // Optimistic UI update
+    setAdmissions(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
+    if (selectedAdmission && selectedAdmission.id === id) {
+      setSelectedAdmission(prev => prev ? { ...prev, status: newStatus } : null);
+    }
+
     const res = await updateAdmissionStatus(id, newStatus);
-    if (res.success) {
-      setAdmissions(prev => prev.map(a => a.id === id ? { ...a, status: newStatus } : a));
+    if (!res.success) {
+      // Revert if database rejected or blocked by RLS
+      setAdmissions(previousAdmissions);
       if (selectedAdmission && selectedAdmission.id === id) {
-        setSelectedAdmission(prev => prev ? { ...prev, status: newStatus } : null);
+        setSelectedAdmission(prev => prev ? { ...prev, status: previousAdmissions.find(a => a.id === id)?.status || 'pending' } : null);
       }
+      alert(res.error || 'اسٹیٹس اپڈیٹ نہیں ہو سکا۔');
     }
   };
 
@@ -709,9 +718,9 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                           onChange={(e) => handleStatusUpdate(item.id, e.target.value)}
                           className="px-2.5 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50 font-bold text-slate-700 outline-none cursor-pointer"
                         >
-                          <option value="pending">Pending</option>
-                          <option value="contacted">Contacted</option>
-                          <option value="approved">Approved</option>
+                          <option value="pending">زیرِ غور (Pending)</option>
+                          <option value="contacted">رابطہ مکمل (Contacted)</option>
+                          <option value="approved">داخلہ منظور (Approved)</option>
                         </select>
 
                         {/* WhatsApp Direct */}

@@ -195,17 +195,30 @@ export async function updateAdmissionStatus(
   }
 
   try {
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('admissions')
-      .update({ status })
-      .eq('id', id);
+      .update({ 
+        status, 
+        updated_at: new Date().toISOString() 
+      })
+      .eq('id', id)
+      .select('id, status');
 
     if (error) {
+      console.error('[Update Admission Status Error]:', error);
       return { success: false, error: error.message };
+    }
+
+    if (!data || data.length === 0) {
+      return { 
+        success: false, 
+        error: 'Supabase میں UPDATE کی اجازت (RLS Policy) فعال نہیں ہے، جس کی وجہ سے اسٹیٹس ڈیٹا بیس میں محفوظ نہیں ہو سکا۔' 
+      };
     }
 
     return { success: true };
   } catch (err: any) {
+    console.error('[Update Admission Status Exception]:', err);
     return { success: false, error: err?.message || 'Failed to update status' };
   }
 }
