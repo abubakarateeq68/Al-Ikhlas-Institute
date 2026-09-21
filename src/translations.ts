@@ -42,9 +42,19 @@ export interface Translations {
     heroImageCaptionTitle: string;
     heroImageCaptionSub: string;
 
-    // Welcome Section
+    // Welcome Section & Official Introduction
     welcomeBadge: string;
     welcomeTitle: string;
+    welcomeFoundation: string;
+    welcomeIntroP1: string;
+    welcomeProgramsTitle: string;
+    welcomeProgramsList: Array<{
+      title: string;
+      desc: string;
+      badge?: string;
+    }>;
+    welcomeIntroP2: string;
+    welcomeMotto: string;
     welcomeText: string;
     welcomeReadMore: string;
 
@@ -381,7 +391,21 @@ export const translations: Record<Language, Translations> = {
       heroImageCaptionSub: "Lahore, Pakistan • Admissions Open",
 
       welcomeBadge: "About The Institute",
-      welcomeTitle: "Welcome to Al-Ikhlas Islamic Institute",
+      welcomeTitle: "Introduction to Al-Ikhlas Islamic Institute",
+      welcomeFoundation: "Established: Thursday, June 27, 2024",
+      welcomeIntroP1: "Al-Ikhlas Islamic Institute is an Islamic educational and training institution, established on Thursday, June 27, 2024. The institute's mission is to disseminate the teachings of the Holy Quran, Islamic understanding, and sacred sciences, while nurturing the moral and spiritual character of male and female students.",
+      welcomeProgramsTitle: "Featured Educational & Training Programs",
+      welcomeProgramsList: [
+        { title: "Tajweed-ul-Quran", desc: "Mastering accurate Quranic pronunciation, phonetics and melodious recitation.", badge: "Foundational" },
+        { title: "18-Month Quran Hifz", desc: "Structured, accelerated Quran memorization with dedicated supervision.", badge: "18 Months" },
+        { title: "2-Year Quran Translation & Tafseer", desc: "Comprehensive study and in-depth commentary of the entire Holy Quran.", badge: "2 Years" },
+        { title: "2-Year Short Dars-e-Nizami", desc: "Foundational Arabic grammar, Fiqh, Hadith, and Islamic jurisprudence.", badge: "2 Years" },
+        { title: "40-Day Fahm-e-Deen Course", desc: "Essential beliefs, daily practical rulings, and spiritual life skills.", badge: "40 Days" },
+        { title: "Summer Course", desc: "Special seasonal enrichment for youth and children during school breaks.", badge: "Seasonal" },
+        { title: "Weekly Dars-e-Quran", desc: "Open community Quran study sessions to deepen connection with Quran & Sunnah.", badge: "Weekly" },
+      ],
+      welcomeIntroP2: "Through the cultivation of knowledge, righteous action, and noble character, Al-Ikhlas Islamic Institute is actively dedicated to shaping a righteous, morally upright, and faith-centered society.",
+      welcomeMotto: "“Let us illuminate the lamp of knowledge with sincerity.”",
       welcomeText: "Al-Ikhlas Islamic Institute is dedicated to providing a welcoming environment for Islamic learning and personal growth. Our aim is to encourage the pursuit of beneficial knowledge and help learners develop a stronger connection with their faith and Islamic values.",
       welcomeReadMore: "Read more about our mission & values",
 
@@ -823,10 +847,24 @@ export const translations: Record<Language, Translations> = {
       heroImageCaptionTitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ",
       heroImageCaptionSub: "لاہور، پاکستان • داخلے جاری ہیں",
 
-      welcomeBadge: "ادارے کا تعارف",
-      welcomeTitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ میں خوش آمدید",
+      welcomeBadge: "ادارے کا تعارف و مشن",
+      welcomeTitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ کا جامع تعارف",
+      welcomeFoundation: "آغاز: 27 جون 2024ء بروز جمعرات",
+      welcomeIntroP1: "الْإِخْلَاص اسلامک انسٹیٹیوٹ ایک دینی و تعلیمی ادارہ ہے، جس کا آغاز 27 جون 2024ء بروز جمعرات سے ہوا۔ ادارے کا مقصد قرآنِ کریم کی تعلیم، فہمِ دین اور اسلامی علوم کو عام کرتے ہوئے طلبہ و طالبات کی دینی و اخلاقی تربیت کرنا ہے۔",
+      welcomeProgramsTitle: "ادارے کے خصوصی تعلیمی و تربیتی کورسز",
+      welcomeProgramsList: [
+        { title: "تجوید القرآن", desc: "قرآنِ مجید کو درست مخارج، تجوید اور حسنِ ترتیل کے ساتھ پڑھنا۔", badge: "بنیادی" },
+        { title: "18 ماہ میں حفظِ قرآن", desc: "مخصوص و منظم تدریسی نظام کے تحت صرف 18 ماہ میں حفظِ کلامِ پاک۔", badge: "18 ماہ" },
+        { title: "2 سالہ ترجمہ و تفسیر کورس", desc: "مکمل قرآنِ کریم کا 2 سالہ باقاعدہ فہم اور مفصل ترجمہ و تفسیر۔", badge: "2 سالہ" },
+        { title: "2 سالہ شارٹ درسِ نظامی", desc: "بنیادی عربی گرامر، فقہ، حدیث، عقائد اور ضروری علومِ اسلامیہ۔", badge: "2 سالہ" },
+        { title: "40 روزہ فہمِ دین کورس", desc: "ضروری دینی مسائل، بنیادی عقائد اور عبادات و طہارت کی عملی تربیت۔", badge: "40 روزہ" },
+        { title: "سمر کورس (Summer Course)", desc: "تعطیلات میں بچوں اور نوجوانوں کے لیے خصوصی فکری و دینی تربیتی کیمپ۔", badge: "موسمی" },
+        { title: "ہفتہ وار درسِ قرآن", desc: "قرآن و سنت سے دائمی وابستگی اور شعورِ دین کی بیداری کے لیے عام نشست۔", badge: "ہفتہ وار" },
+      ],
+      welcomeIntroP2: "الْإِخْلَاص اسلامک انسٹیٹیوٹ علم، عمل اور کردار کی تعمیر کے ذریعے ایک صالح، باکردار اور دین سے وابستہ معاشرے کی تشکیل میں اپنا کردار ادا کرنے کے لیے سرگرمِ عمل ہے۔",
+      welcomeMotto: "”آئیے اخلاص کے ساتھ علم کا چراغ روشن کریں۔“",
       welcomeText: "الْإِخْلَاص اسلامک انسٹیٹیوٹ اسلامی تعلیم اور ذاتی و روحانی ترقی کے لیے ایک پروقار اور سازگار ماحول فراہم کرنے کے لیے پرعزم ہے۔ ہمارا مقصد نفع بخش علم کے حصول کی حوصلہ افزائی کرنا اور طالبانِ علم کو اپنے ایمان اور اسلامی اقدار کے ساتھ مضبوط تعلق قائم کرنے میں مدد دینا ہے۔",
-      welcomeReadMore: "ہمارے مشن اور اقدار کے بارے میں مزید جانیے",
+      welcomeReadMore: "ادارے کے مشن اور اقدار کے بارے میں مزید جانیے",
 
       whyBadge: "بنیادی اصول",
       whyTitle: "الْإِخْلَاص اسلامک انسٹیٹیوٹ کا انتخاب کیوں؟",

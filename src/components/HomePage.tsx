@@ -8,7 +8,9 @@ import {
   MapPin, 
   ArrowRight, 
   CheckCircle2, 
-  FileEdit
+  FileEdit,
+  Calendar,
+  GraduationCap
 } from 'lucide-react';
 import { PageView, Language } from '../types.ts';
 import { IslamicStarIcon, GeometricDivider, SubtleBismillahOrnament } from './IslamicMotif.tsx';
@@ -155,36 +157,157 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
         </div>
       </section>
 
-      {/* 2. WELCOME SECTION */}
-      <section className="py-16 sm:py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <div className="space-y-5">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-[#9C7524] text-xs font-bold uppercase tracking-widest border border-[#C99738]/40 shadow-xs">
-            <IslamicStarIcon size={12} className="text-[#ECC876]" />
-            <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.welcomeBadge}</span>
+      {/* 2. OFFICIAL INSTITUTE INTRODUCTION SECTION - ادارے کا جامع تعارف */}
+      <section className="py-16 sm:py-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="bg-gradient-to-b from-white via-[#FAF7F2] to-white rounded-3xl p-6 sm:p-10 md:p-12 border-2 border-[#ECC876]/60 shadow-xl relative overflow-hidden space-y-8 sm:space-y-10">
+          
+          {/* Subtle Islamic ambient glow backdrop */}
+          <div className="absolute top-0 right-0 w-80 sm:w-96 h-80 sm:h-96 bg-radial from-[#ECC876]/15 to-transparent blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 sm:w-96 h-80 sm:h-96 bg-radial from-[#0D5C3A]/10 to-transparent blur-3xl pointer-events-none" />
+
+          {/* Header & Inception Pill */}
+          <div className="text-center space-y-3.5 max-w-3xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#041A10] text-[#ECC876] text-xs font-bold uppercase tracking-wider border border-[#C99738]/50 shadow-xs">
+                <IslamicStarIcon size={12} className="text-[#ECC876]" />
+                <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.welcomeBadge}</span>
+              </div>
+
+              {/* Founding Date Tag */}
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] text-[#072B1B] text-xs font-extrabold border border-[#C99738]/40 shadow-2xs">
+                <Calendar className="w-3.5 h-3.5 text-[#C99738]" />
+                <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.welcomeFoundation}</span>
+              </div>
+            </div>
+
+            <h2 className={`font-bold text-[#072B1B] ${
+              lang === 'ur' ? 'font-urdu-title text-2xl sm:text-4xl lg:text-5xl leading-[2.1] py-1' : 'font-display text-2xl sm:text-3xl lg:text-4xl leading-snug'
+            }`}>
+              {t.home.welcomeTitle}
+            </h2>
+
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#C99738] to-transparent mx-auto rounded-full" />
           </div>
 
-          <h2 className={`font-bold text-[#072B1B] max-w-3xl mx-auto ${
-            lang === 'ur' ? 'font-urdu-title text-xl sm:text-3xl lg:text-4xl leading-[2] py-1' : 'font-display text-2xl sm:text-3xl lg:text-4xl leading-snug'
+          {/* Paragraph 1: Main Introduction */}
+          <div className={`p-5 sm:p-7 rounded-2xl bg-[#FAF7F2]/90 border border-[#C99738]/30 shadow-2xs ${
+            lang === 'ur' ? 'text-right' : 'text-left'
           }`}>
-            {t.home.welcomeTitle}
-          </h2>
+            <p className={`text-slate-700 leading-relaxed font-medium ${
+              lang === 'ur' ? 'font-urdu text-base sm:text-lg sm:leading-[2.2]' : 'text-base sm:text-lg leading-relaxed'
+            }`}>
+              <strong className="text-[#072B1B] font-extrabold">{lang === 'ur' ? 'الْإِخْلَاص اسلامک انسٹیٹیوٹ' : 'Al-Ikhlas Islamic Institute'}</strong>{' '}
+              {t.home.welcomeIntroP1.replace(lang === 'ur' ? 'الْإِخْلَاص اسلامک انسٹیٹیوٹ ' : 'Al-Ikhlas Islamic Institute ', '')}
+            </p>
+          </div>
 
-          <p className={`text-slate-600 leading-relaxed max-w-3xl mx-auto ${
-            lang === 'ur' ? 'font-urdu text-base sm:text-lg' : 'text-base sm:text-lg'
+          {/* Featured Courses Showcase Grid */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between gap-3 border-b border-[#C99738]/20 pb-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center shadow-xs shrink-0">
+                  <GraduationCap className="w-4 h-4" />
+                </div>
+                <h3 className={`font-bold text-[#072B1B] ${lang === 'ur' ? 'font-urdu text-lg sm:text-xl' : 'font-display text-base sm:text-lg'}`}>
+                  {t.home.welcomeProgramsTitle}
+                </h3>
+              </div>
+              <button
+                onClick={() => handleNav('courses')}
+                className="text-xs font-extrabold text-[#0D5C3A] hover:text-[#072B1B] flex items-center gap-1 transition-colors cursor-pointer shrink-0"
+              >
+                <span>{lang === 'ur' ? 'تمام کورسز دیکھیں' : 'View All Courses'}</span>
+                <ArrowRight className={`w-3.5 h-3.5 text-[#C99738] ${lang === 'ur' ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+              {t.home.welcomeProgramsList.map((prog, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => handleNav('courses')}
+                  className="bg-white rounded-2xl p-4 border border-[#C99738]/25 hover:border-[#C99738] hover:shadow-md transition-all group flex flex-col justify-between cursor-pointer"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="w-6 h-6 rounded-lg bg-[#FAF7F2] text-[#072B1B] font-mono text-xs font-extrabold flex items-center justify-center border border-[#C99738]/30">
+                        0{idx + 1}
+                      </span>
+                      {prog.badge && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#0D5C3A]/10 text-[#0D5C3A] border border-[#0D5C3A]/20">
+                          {prog.badge}
+                        </span>
+                      )}
+                    </div>
+                    <h4 className={`font-bold text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors ${lang === 'ur' ? 'font-urdu text-base sm:text-lg' : 'font-semibold text-sm'}`}>
+                      {prog.title}
+                    </h4>
+                    <p className={`text-slate-600 text-xs leading-relaxed ${lang === 'ur' ? 'font-urdu' : ''}`}>
+                      {prog.desc}
+                    </p>
+                  </div>
+                  <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-[#0D5C3A]">
+                    <span>{lang === 'ur' ? 'تفصیلات دیکھیں' : 'Learn more'}</span>
+                    <ArrowRight className={`w-3 h-3 text-[#C99738] transition-transform ${lang === 'ur' ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Paragraph 2: Vision & Character Building */}
+          <div className={`p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-emerald-50/70 via-white to-emerald-50/70 border border-emerald-200/60 shadow-2xs ${
+            lang === 'ur' ? 'text-right' : 'text-left'
           }`}>
-            {t.home.welcomeText}
-          </p>
+            <p className={`text-slate-700 leading-relaxed font-medium ${
+              lang === 'ur' ? 'font-urdu text-base sm:text-lg sm:leading-[2.2]' : 'text-base sm:text-lg leading-relaxed'
+            }`}>
+              {t.home.welcomeIntroP2}
+            </p>
+          </div>
 
-          <div className="pt-3">
+          {/* Motto Banner / شعار */}
+          <div className="relative rounded-2xl bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] p-6 sm:p-8 text-center text-white border-2 border-[#ECC876]/70 shadow-lg overflow-hidden">
+            <div className="absolute inset-0 bg-islamic-pattern-dark opacity-20 pointer-events-none" />
+            <div className="relative z-10 space-y-2">
+              <div className="w-8 h-8 rounded-full bg-[#ECC876]/20 text-[#ECC876] flex items-center justify-center mx-auto border border-[#ECC876]/40">
+                <Sparkles className="w-4 h-4 text-[#ECC876]" />
+              </div>
+              <p className={`font-bold text-[#F5E1A4] tracking-wide ${
+                lang === 'ur' ? 'font-urdu-title text-xl sm:text-2xl md:text-3xl leading-[2.2]' : 'font-display text-lg sm:text-xl md:text-2xl'
+              }`}>
+                {t.home.welcomeMotto}
+              </p>
+            </div>
+          </div>
+
+          {/* Action CTAs */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3.5">
             <button
-              id="welcome-read-more-btn"
+              onClick={() => handleNav('admission')}
+              className="px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#072B1B] via-[#0D5C3A] to-[#072B1B] hover:brightness-110 text-[#F5E1A4] font-bold text-xs sm:text-sm shadow-md border border-[#C99738]/50 transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <FileEdit className="w-4 h-4 text-[#ECC876]" />
+              <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.nav.admission}</span>
+              <ArrowRight className={`w-4 h-4 text-[#ECC876] ${lang === 'ur' ? 'rotate-180' : ''}`} />
+            </button>
+
+            <button
+              onClick={() => handleNav('courses')}
+              className="px-6 sm:px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#ECC876] via-[#D4AF37] to-[#B8860B] hover:brightness-110 text-[#072B1B] font-bold text-xs sm:text-sm shadow-sm border border-[#FFF0C2]/50 transition-all flex items-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <BookOpen className="w-4 h-4 text-[#072B1B]" />
+              <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.nav.courses}</span>
+            </button>
+
+            <button
               onClick={() => handleNav('about')}
-              className="text-[#0D5C3A] hover:text-[#072B1B] font-bold text-sm inline-flex items-center gap-2 group px-5 py-2 rounded-xl bg-white border border-[#C99738]/30 shadow-xs hover:border-[#C99738] transition-all cursor-pointer"
+              className="px-5 sm:px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm border border-slate-200 hover:border-[#C99738] shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <span className={lang === 'ur' ? 'font-urdu' : ''}>{t.home.welcomeReadMore}</span>
-              <ArrowRight className={`w-4 h-4 text-[#C99738] transition-transform ${lang === 'ur' ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
             </button>
           </div>
+
         </div>
       </section>
 
