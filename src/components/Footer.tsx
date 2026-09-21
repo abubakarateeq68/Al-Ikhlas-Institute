@@ -29,8 +29,8 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, lang, setLang })
       <div className="h-1 w-full bg-gradient-to-r from-transparent via-[#ECC876] to-transparent shadow-[0_0_12px_rgba(236,200,118,0.8)]" />
       <div className="absolute inset-0 bg-islamic-pattern-dark opacity-20 pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 relative">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-[#C99738]/20">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-24 sm:pb-12 relative">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 pb-10 sm:pb-12 border-b border-[#C99738]/20">
           
           {/* Institute Brand & Motto */}
           <div className="md:col-span-5 space-y-4">

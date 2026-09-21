@@ -57,13 +57,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-50 w-full transition-all duration-300">
       {/* Top information bar - Royal Emerald with Gold Hairline */}
-      <div className="bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] text-[#E7E2D8] text-xs py-2 px-4 border-b border-[#C99738]/30 shadow-xs relative">
+      <div className="bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] text-[#E7E2D8] text-xs py-1.5 sm:py-2 px-3 sm:px-4 border-b border-[#C99738]/30 shadow-xs relative">
         <div className="absolute inset-0 bg-islamic-pattern-dark opacity-20 pointer-events-none" />
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 relative">
-          <div className="flex items-center gap-4 text-xs font-normal">
-            <span className="flex items-center gap-1.5 text-emerald-100/90 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-[#ECC876] drop-shadow-[0_0_4px_rgba(236,200,118,0.5)]" />
-              {t.instituteLocation}
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 relative text-[11px] sm:text-xs">
+          <div className="flex items-center gap-2 sm:gap-4 font-normal">
+            <span className="flex items-center gap-1 sm:gap-1.5 text-emerald-100/90 font-medium">
+              <MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#ECC876] shrink-0" />
+              <span className="truncate max-w-[130px] sm:max-w-none">{t.instituteLocation}</span>
             </span>
             <span className="hidden sm:inline-block text-[#C99738]/60">•</span>
             <span className="hidden sm:inline-block text-[#F3E5AB]/80 tracking-wide">
@@ -71,14 +71,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </div>
           
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <a
               id="top-bar-phone-link"
               href="tel:+923094884183"
               dir="ltr"
-              className="flex items-center gap-1.5 text-[#F5E1A4] hover:text-white font-semibold transition-all hover:drop-shadow-[0_0_8px_rgba(245,225,164,0.6)]"
+              className="flex items-center gap-1 sm:gap-1.5 text-[#F5E1A4] hover:text-white font-semibold transition-all shrink-0"
             >
-              <Phone className="w-3.5 h-3.5 text-[#ECC876]" />
+              <Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#ECC876]" />
               <span className="tracking-wide">+92 309 4884183</span>
             </a>
 
@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               id="top-bar-lang-toggle"
               onClick={toggleLanguage}
-              className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-gradient-to-r from-[#0D5C3A]/80 to-[#145738]/80 hover:from-[#145738] hover:to-[#0D5C3A] text-[#F5E1A4] text-xs font-semibold border border-[#C99738]/40 hover:border-[#ECC876] shadow-xs hover:shadow-[0_0_12px_rgba(201,151,56,0.35)] transition-all cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-gradient-to-r from-[#0D5C3A]/80 to-[#145738]/80 hover:from-[#145738] hover:to-[#0D5C3A] text-[#F5E1A4] text-xs font-semibold border border-[#C99738]/40 hover:border-[#ECC876] shadow-xs transition-all cursor-pointer"
               title={lang === 'en' ? "اردو میں دیکھیں" : "Switch to English"}
             >
               <Globe className="w-3 h-3 text-[#ECC876]" />
@@ -102,18 +102,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav
         className={`w-full bg-[#FAF7F2]/95 backdrop-blur-xl transition-all duration-300 border-b ${
           isScrolled 
-            ? 'border-[#C99738]/30 shadow-[0_8px_30px_rgba(7,43,27,0.08)] py-3' 
-            : 'border-[#C99738]/20 shadow-[0_2px_15px_rgba(7,43,27,0.03)] py-4'
+            ? 'border-[#C99738]/30 shadow-[0_8px_30px_rgba(7,43,27,0.08)] py-2 sm:py-3' 
+            : 'border-[#C99738]/20 shadow-[0_2px_15px_rgba(7,43,27,0.03)] py-2.5 sm:py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo / Brand Name */}
           <button
             id="brand-logo-btn"
             onClick={() => handleNavClick('home')}
-            className="flex items-center gap-2.5 sm:gap-3.5 text-start group focus:outline-none focus:ring-2 focus:ring-[#C99738]/40 rounded-xl p-1 transition-all"
+            className="flex items-center gap-2 sm:gap-3.5 text-start group focus:outline-none focus:ring-2 focus:ring-[#C99738]/40 rounded-xl p-0.5 sm:p-1 transition-all"
           >
-            <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-xl bg-white p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] group-hover:shadow-[0_0_15px_rgba(201,151,56,0.35)] transition-all shrink-0 flex items-center justify-center overflow-hidden">
+            <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-xl bg-white p-1 shadow-md border-2 border-[#C99738]/40 ring-1 ring-[#C99738]/20 group-hover:border-[#C99738] transition-all shrink-0 flex items-center justify-center overflow-hidden">
               <img 
                 src={logoImg} 
                 alt="Al-Ikhlas Islamic Institute Logo" 
@@ -122,12 +122,12 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </div>
             <div>
-              <span className={`block font-bold tracking-tight text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors ${
-                lang === 'ur' ? 'font-urdu-title text-sm sm:text-lg md:text-xl text-start leading-snug sm:leading-relaxed py-0.5' : 'font-display text-base sm:text-lg md:text-xl leading-tight'
+              <span className={`block font-bold tracking-tight text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors truncate max-w-[170px] xs:max-w-[220px] sm:max-w-none ${
+                lang === 'ur' ? 'font-urdu-title text-sm sm:text-lg md:text-xl text-start leading-snug sm:leading-relaxed py-0.5' : 'font-display text-sm sm:text-lg md:text-xl leading-tight'
               }`}>
                 {t.instituteName}
               </span>
-              <span className={`block text-[9px] sm:text-[11px] font-bold text-[#9C7524] ${
+              <span className={`block text-[9px] sm:text-[11px] font-bold text-[#9C7524] truncate max-w-[170px] sm:max-w-none ${
                 lang === 'ur' ? 'font-urdu tracking-normal' : 'tracking-[0.2em] uppercase'
               }`}>
                 {t.instituteCategory}
