@@ -33,7 +33,7 @@ export const LearningPage: React.FC<LearningPageProps> = ({ setCurrentPage, lang
 
   const getCourseWhatsAppLink = (courseTitle: string) => {
     const message = lang === 'ur'
-      ? `السلام علیکم! مجھے الْإِخْلَاص اسلامک انسٹیٹیوٹ کے کورس "${courseTitle}" کے داخلے، شیڈول اور فیس کے بارے میں رہنمائی درکار ہے۔`
+      ? `السلام علیکم! مجھے الاخلاص اسلامک انسٹیٹیوٹ کے کورس "${courseTitle}" کے داخلے، شیڈول اور فیس کے بارے میں رہنمائی درکار ہے۔`
       : `Assalam-o-Alaikum! I would like to inquire about admission, timing, and details for the "${courseTitle}" course at Al-Ikhlas Islamic Institute.`;
     return `https://wa.me/923094884183?text=${encodeURIComponent(message)}`;
   };

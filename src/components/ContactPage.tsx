@@ -122,7 +122,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
                 </p>
                 <a
                   id="contact-whatsapp-direct-link"
-                  href={`https://wa.me/923094884183?text=${encodeURIComponent(lang === 'ur' ? 'السلام علیکم! مجھے الْإِخْلَاص اسلامک انسٹیٹیوٹ کے بارے میں معلومات حاصل کرنی ہیں۔' : 'Assalamu Alaikum! I would like to inquire about Al-Ikhlas Islamic Institute.')}`}
+                  href={`https://wa.me/923094884183?text=${encodeURIComponent(lang === 'ur' ? 'السلام علیکم! مجھے الاخلاص اسلامک انسٹیٹیوٹ کے بارے میں معلومات حاصل کرنی ہیں۔' : 'Assalamu Alaikum! I would like to inquire about Al-Ikhlas Islamic Institute.')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   dir="ltr"
@@ -138,7 +138,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
 
             <a
               id="contact-whatsapp-btn"
-              href={`https://wa.me/923094884183?text=${encodeURIComponent(lang === 'ur' ? 'السلام علیکم! مجھے الْإِخْلَاص اسلامک انسٹیٹیوٹ کے بارے میں معلومات حاصل کرنی ہیں۔' : 'Assalamu Alaikum! I would like to inquire about Al-Ikhlas Islamic Institute.')}`}
+              href={`https://wa.me/923094884183?text=${encodeURIComponent(lang === 'ur' ? 'السلام علیکم! مجھے الاخلاص اسلامک انسٹیٹیوٹ کے بارے میں معلومات حاصل کرنی ہیں۔' : 'Assalamu Alaikum! I would like to inquire about Al-Ikhlas Islamic Institute.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-sm font-bold shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_14px_rgba(37,211,102,0.3)]"
@@ -162,7 +162,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ lang, setCurrentPage }
                   {t.instituteLocation}
                 </p>
               </div>
-              <p className={`text-xs text-slate-500 leading-relaxed ${lang === 'ur' ? 'font-urdu' : ''}`}>
+              <p className={`leading-relaxed ${lang === 'ur' ? 'font-urdu-title text-sm sm:text-base text-[#072B1B] font-semibold' : 'text-xs text-slate-500'}`}>
                 {t.instituteName} — {lang === 'ur' ? 'پنجاب، پاکستان' : 'Punjab, Pakistan'}
               </p>
             </div>

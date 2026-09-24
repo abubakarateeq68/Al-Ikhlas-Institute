@@ -140,7 +140,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
                         <IslamicStarIcon size={16} className="text-[#ECC876]" />
                       </div>
                       <div>
-                        <p className={`font-bold text-[#F5E1A4] ${lang === 'ur' ? 'font-urdu text-sm sm:text-base' : 'font-display text-xs sm:text-sm'}`}>
+                        <p className={`font-bold text-[#F5E1A4] ${lang === 'ur' ? 'font-urdu-title text-base sm:text-xl' : 'font-display text-xs sm:text-sm'}`}>
                           {t.home.heroImageCaptionTitle}
                         </p>
                         <p className={`text-emerald-100/70 ${lang === 'ur' ? 'font-urdu text-[11px] sm:text-xs' : 'text-[11px] sm:text-xs'}`}>
@@ -195,8 +195,10 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
             <p className={`text-slate-700 leading-relaxed font-medium ${
               lang === 'ur' ? 'font-urdu text-sm sm:text-lg sm:leading-[2.2]' : 'text-sm sm:text-lg leading-relaxed'
             }`}>
-              <strong className="text-[#072B1B] font-extrabold">{lang === 'ur' ? 'الْإِخْلَاص اسلامک انسٹیٹیوٹ' : 'Al-Ikhlas Islamic Institute'}</strong>{' '}
-              {t.home.welcomeIntroP1.replace(lang === 'ur' ? 'الْإِخْلَاص اسلامک انسٹیٹیوٹ ' : 'Al-Ikhlas Islamic Institute ', '')}
+              <strong className={`text-[#072B1B] font-extrabold ${
+                lang === 'ur' ? 'font-urdu-title text-base sm:text-2xl text-[#041A10] inline-block px-1' : ''
+              }`}>{lang === 'ur' ? 'الاخلاص اسلامک انسٹیٹیوٹ' : 'Al-Ikhlas Islamic Institute'}</strong>{' '}
+              {t.home.welcomeIntroP1.replace(lang === 'ur' ? 'الاخلاص اسلامک انسٹیٹیوٹ ' : 'Al-Ikhlas Islamic Institute ', '')}
             </p>
           </div>
 
@@ -484,7 +486,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentPage, lang }) => {
               </div>
               <div className="space-y-1">
                 <h3 className={`font-bold text-[#072B1B] ${
-                  lang === 'ur' ? 'font-urdu-title text-lg sm:text-2xl' : 'font-display text-lg sm:text-2xl'
+                  lang === 'ur' ? 'font-urdu-title text-2xl sm:text-3xl' : 'font-display text-lg sm:text-2xl'
                 }`}>
                   {t.instituteName}
                 </h3>

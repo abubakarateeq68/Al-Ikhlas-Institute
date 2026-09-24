@@ -259,6 +259,16 @@ export async function uploadCoursePoster(
     return { success: false, error: 'Supabase is not configured' };
   }
 
+  // Maximum 500 KB limit validation
+  const MAX_POSTER_SIZE_BYTES = 500 * 1024; // 500 KB
+  if (file.size > MAX_POSTER_SIZE_BYTES) {
+    const sizeInKb = (file.size / 1024).toFixed(1);
+    return {
+      success: false,
+      error: `آپ 500 KB سے بڑا پوسٹر اپلوڈ نہیں کر سکتے! منتخب کردہ فائل کا سائز ${sizeInKb} KB ہے۔ براہِ کرم 500 KB یا اس سے کم کا پوسٹر اپلوڈ کریں۔`
+    };
+  }
+
   try {
     const fileExt = file.name.split('.').pop() || 'png';
     const cleanFileName = `poster_${Date.now()}_${Math.random().toString(36).substring(2, 8)}.${fileExt}`;

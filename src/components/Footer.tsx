@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage, lang, setLang })
               </div>
               <div>
                 <h3 className={`font-bold text-white tracking-wide ${
-                  lang === 'ur' ? 'font-urdu-title text-2xl' : 'font-display text-xl'
+                  lang === 'ur' ? 'font-urdu-title text-2xl sm:text-3xl md:text-4xl' : 'font-display text-xl'
                 }`}>
                   {t.instituteName}
                 </h3>

@@ -10,7 +10,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ lang }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const phoneNumber = "923094884183";
   
-  const urduMessage = "السلام علیکم! مجھے الْإِخْلَاص اسلامک انسٹیٹیوٹ لاہور کے کورسز اور آن لائن داخلے کے بارے میں رہنمائی درکار ہے۔";
+  const urduMessage = "السلام علیکم! مجھے الاخلاص اسلامک انسٹیٹیوٹ لاہور کے کورسز اور آن لائن داخلے کے بارے میں رہنمائی درکار ہے۔";
   const englishMessage = "Assalamu Alaikum! I would like to inquire about courses and admissions at Al-Ikhlas Islamic Institute Lahore.";
   
   const selectedMessage = lang === 'ur' ? urduMessage : englishMessage;

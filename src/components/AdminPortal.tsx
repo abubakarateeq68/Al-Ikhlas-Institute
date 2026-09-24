@@ -298,10 +298,27 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
     }
   };
 
+  // Maximum allowed poster file size (500 KB)
+  const MAX_POSTER_SIZE_BYTES = 500 * 1024; // 500 KB
+
   // Handle Poster File Selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+
+      // Strict validation: maximum 500 KB
+      if (file.size > MAX_POSTER_SIZE_BYTES) {
+        const sizeInKb = (file.size / 1024).toFixed(1);
+        const errMsg = lang === 'ur'
+          ? `آپ 500 KB سے بڑا پوسٹر اپلوڈ نہیں کر سکتے! منتخب کردہ تصویر کا سائز ${sizeInKb} KB ہے۔ براہِ کرم 500 KB یا اس سے کم سائز کا پوسٹر منتخب کریں۔`
+          : `You cannot upload a poster larger than 500 KB! Selected file is ${sizeInKb} KB. Please select a poster of 500 KB or less.`;
+        setUploadError(errMsg);
+        setPosterFile(null);
+        setPosterPreview(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+
       setPosterFile(file);
       const previewUrl = URL.createObjectURL(file);
       setPosterPreview(previewUrl);
@@ -314,6 +331,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
     e.preventDefault();
     if (!posterFile) {
       setUploadError(lang === 'ur' ? 'براہِ کرم پہلے پوسٹر کی تصویر منتخب کریں۔' : 'Please select a poster image first.');
+      return;
+    }
+    if (posterFile.size > MAX_POSTER_SIZE_BYTES) {
+      const sizeInKb = (posterFile.size / 1024).toFixed(1);
+      setUploadError(lang === 'ur'
+        ? `آپ 500 KB سے بڑا پوسٹر اپلوڈ نہیں کر سکتے! فائل کا سائز ${sizeInKb} KB ہے۔`
+        : `You cannot upload a poster larger than 500 KB! File size is ${sizeInKb} KB.`
+      );
       return;
     }
     if (!newPosterData.title.trim() && !newPosterData.title_ur.trim()) {
@@ -423,19 +448,24 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
   // Render Login Lock Screen if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#041A10] via-[#072B1B] to-[#041A10] flex items-center justify-center p-3 sm:p-4">
+      <div className="min-h-screen bg-gradient-to-br from-[#041A10] via-[#072B1B] to-[#041A10] flex items-center justify-center p-3 sm:p-4" dir="rtl">
         <div className="max-w-md w-full bg-white/95 backdrop-blur-xl rounded-3xl p-5 sm:p-8 border-2 border-[#ECC876]/60 shadow-2xl space-y-5 sm:space-y-6 text-center">
           <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-[#041A10] to-[#0D5C3A] text-[#ECC876] flex items-center justify-center mx-auto border border-[#ECC876]/40 shadow-lg">
             <Lock className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
 
           <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-bold text-[#072B1B] font-display">
-              الْإِخْلَاص ایڈمن پورٹل
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#072B1B] font-urdu-title">
+              الاخلاص اسلامک انسٹیٹیوٹ
             </h2>
-            <p className="text-[11px] sm:text-xs text-slate-500 font-semibold tracking-wider uppercase">
-              Admin Access Only • Restricted Area
-            </p>
+            <div className="flex items-center justify-center gap-1.5 pt-0.5">
+              <span className="text-xs sm:text-sm font-urdu font-bold text-[#0D5C3A] bg-[#ECC876]/20 px-2.5 py-0.5 rounded-md border border-[#ECC876]/40">
+                ایڈمن پورٹل
+              </span>
+              <span className="text-[10px] sm:text-[11px] text-slate-500 font-semibold tracking-wider uppercase font-sans">
+                • Admin Access Only
+              </span>
+            </div>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4 text-start">
@@ -547,7 +577,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
 
   // Authenticated Admin Dashboard
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-slate-800">
+    <div className="min-h-screen bg-[#FAF7F2] text-slate-800" dir="rtl">
       
       {/* 1. TOP ADMIN BAR */}
       <header className="bg-gradient-to-r from-[#041A10] via-[#072B1B] to-[#041A10] text-white py-3 px-3 sm:px-8 border-b border-[#ECC876]/30 sticky top-0 z-40 shadow-md">
@@ -559,16 +589,16 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-center gap-1.5">
-                  <h1 className="font-bold text-white text-sm sm:text-lg">
-                    الْإِخْلَاص ایڈمن پورٹل
+                <div className="flex items-center gap-2">
+                  <h1 className="font-bold text-white text-base sm:text-2xl font-urdu-title leading-snug">
+                    الاخلاص اسلامک انسٹیٹیوٹ
                   </h1>
-                  <span className="text-[9px] sm:text-[10px] bg-[#ECC876] text-[#041A10] font-extrabold px-1.5 py-0.5 rounded uppercase tracking-wider">
+                  <span className="text-[9px] sm:text-[10px] bg-[#ECC876] text-[#041A10] font-extrabold px-1.5 py-0.5 rounded font-sans uppercase tracking-wider">
                     Admin
                   </span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] text-emerald-200/80">
-                  داخلہ فارم مینجمنٹ و کورس پوسٹرز اپلوڈر
+                <p className="text-[11px] sm:text-xs text-emerald-200/90 font-urdu">
+                  ایڈمن پورٹل • داخلہ فارم مینجمنٹ و کورس پوسٹرز اپلوڈر
                 </p>
               </div>
             </div>
@@ -763,7 +793,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                   const currentStatusClass = statusColors[item.status] || statusColors.pending;
 
                   const whatsappLink = `https://wa.me/${item.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                    `السلام علیکم ${item.full_name}! الْإِخْلَاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${item.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
+                    `السلام علیکم ${item.full_name}! الاخلاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${item.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
                   )}`;
 
                   return (
@@ -927,9 +957,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                 
                 {/* Image Upload Area */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-2">
-                    پوسٹر کی تصویر (Poster Image - JPG/PNG): *
-                  </label>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <label className="block text-xs font-bold text-slate-700">
+                      پوسٹر کی تصویر (Poster Image - JPG/PNG): *
+                    </label>
+                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
+                      زیادہ سے زیادہ سائز: 500 KB
+                    </span>
+                  </div>
                   
                   <div className="flex flex-col sm:flex-row items-center gap-4">
                     {/* File Picker Box */}
@@ -942,8 +977,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                         تصویر منتخب کرنے کے لیے یہاں کلک کریں
                       </p>
                       <p className="text-[11px] text-slate-500">
-                        PNG, JPG, یا WEBP تصویر منتخب کریں
+                        PNG, JPG, یا WEBP تصویر (زیادہ سے زیادہ سائز: 500 KB)
                       </p>
+                      {posterFile && (
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold font-mono">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>{posterFile.name} ({(posterFile.size / 1024).toFixed(1)} KB / 500 KB)</span>
+                        </div>
+                      )}
                       <input
                         ref={fileInputRef}
                         type="file"
@@ -954,13 +995,17 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                     </div>
 
                     {/* Image Preview Box */}
-                    {posterPreview && (
+                    {posterPreview && posterFile && (
                       <div className="relative w-32 sm:w-36 h-44 sm:h-48 rounded-2xl overflow-hidden border-2 border-[#ECC876] shadow-md shrink-0 bg-slate-900 mx-auto sm:mx-0">
                         <img 
                           src={posterPreview} 
                           alt="Poster Preview" 
                           className="w-full h-full object-cover"
                         />
+                        <div className="absolute bottom-0 inset-x-0 bg-black/75 backdrop-blur-xs py-1 px-1.5 text-[10px] text-center text-white font-mono flex items-center justify-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                          <span>{(posterFile.size / 1024).toFixed(0)} KB / 500 KB</span>
+                        </div>
                         <button
                           type="button"
                           onClick={() => {
@@ -968,7 +1013,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                             setPosterPreview(null);
                             if (fileInputRef.current) fileInputRef.current.value = '';
                           }}
-                          className="absolute top-1.5 right-1.5 p-1 rounded-full bg-red-600 text-white shadow-md hover:bg-red-700"
+                          className="absolute top-1.5 right-1.5 p-1 rounded-full bg-red-600 text-white shadow-md hover:bg-red-700 cursor-pointer"
+                          title="حذف کریں"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -1331,7 +1377,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
               <div className="grid grid-cols-3 sm:flex items-center gap-2">
                 <a
                   href={`https://wa.me/${selectedAdmission.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
-                    `السلام علیکم ${selectedAdmission.full_name}! الْإِخْلَاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${selectedAdmission.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
+                    `السلام علیکم ${selectedAdmission.full_name}! الاخلاص اسلامک انسٹیٹیوٹ میں آپ کے داخلہ فارم (Ref: ${selectedAdmission.ref_number}) کے حوالے سے رابطہ کیا جا رہا ہے۔`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -1371,11 +1417,11 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ setCurrentPage, lang }
                   <Smartphone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-[#072B1B] text-base">
-                    الْإِخْلَاص ایڈمن پورٹل ایپ انسٹال کریں
+                  <h3 className="font-extrabold text-[#072B1B] text-lg sm:text-2xl font-urdu-title">
+                    الاخلاص اسلامک انسٹیٹیوٹ
                   </h3>
-                  <p className="text-[11px] text-slate-500">
-                    بغیر ویب سائٹ کھولے ہوم اسکرین سے براہِ راست ایڈمن پورٹل کھولیں
+                  <p className="text-xs text-slate-500 font-urdu">
+                    ایڈمن پورٹل ایپ انسٹال کریں — بغیر ویب سائٹ کھولے ہوم اسکرین سے براہِ راست کھولیں
                   </p>
                 </div>
               </div>

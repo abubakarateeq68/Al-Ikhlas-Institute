@@ -122,13 +122,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               />
             </div>
             <div>
-              <span className={`block font-bold tracking-tight text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors truncate max-w-[170px] xs:max-w-[220px] sm:max-w-none ${
-                lang === 'ur' ? 'font-urdu-title text-sm sm:text-lg md:text-xl text-start leading-snug sm:leading-relaxed py-0.5' : 'font-display text-sm sm:text-lg md:text-xl leading-tight'
+              <span className={`block font-bold tracking-tight text-[#072B1B] group-hover:text-[#0D5C3A] transition-colors truncate max-w-[200px] xs:max-w-[270px] sm:max-w-none ${
+                lang === 'ur' ? 'font-urdu-title text-base xs:text-lg sm:text-2xl md:text-3xl text-start leading-snug sm:leading-relaxed py-0.5' : 'font-display text-sm sm:text-lg md:text-xl leading-tight'
               }`}>
                 {t.instituteName}
               </span>
-              <span className={`block text-[9px] sm:text-[11px] font-bold text-[#9C7524] truncate max-w-[170px] sm:max-w-none ${
-                lang === 'ur' ? 'font-urdu tracking-normal' : 'tracking-[0.2em] uppercase'
+              <span className={`block text-[10px] sm:text-xs font-bold text-[#9C7524] truncate max-w-[200px] xs:max-w-[270px] sm:max-w-none ${
+                lang === 'ur' ? 'font-urdu tracking-normal text-xs sm:text-sm' : 'tracking-[0.2em] uppercase'
               }`}>
                 {t.instituteCategory}
               </span>

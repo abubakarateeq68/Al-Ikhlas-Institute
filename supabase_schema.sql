@@ -1,5 +1,5 @@
 -- ========================================================================
--- Al-Ikhlas Islamic Institute (الْإِخْلَاص اسلامک انسٹیٹیوٹ)
+-- Al-Ikhlas Islamic Institute (الاخلاص اسلامک انسٹیٹیوٹ)
 -- Supabase Database Schema: Admissions & Course Updates
 -- ========================================================================
 -- Instructions:

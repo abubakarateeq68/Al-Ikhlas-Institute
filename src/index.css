@@ -2,7 +2,10 @@
 
 @font-face {
   font-family: 'Jameel Noori Nastaleeq';
-  src: url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
+  src: local('Jameel Noori Nastaleeq'),
+       local('JameelNooriNastaleeq'),
+       local('Jameel Noori Nastaleeq Kasheeda'),
+       url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
        url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
@@ -11,7 +14,10 @@
 
 @font-face {
   font-family: 'JameelNooriNastaliq';
-  src: url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
+  src: local('Jameel Noori Nastaleeq'),
+       local('JameelNooriNastaliq'),
+       local('Jameel Noori Nastaleeq Kasheeda'),
+       url('/fonts/jameel-noori-nastaleeq.woff2') format('woff2'),
        url('https://cdn.jsdelivr.net/npm/jameel-noori/fonts/jameel-noori-nastaleeq4.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;

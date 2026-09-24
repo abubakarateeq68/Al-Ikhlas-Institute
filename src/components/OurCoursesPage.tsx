@@ -72,7 +72,7 @@ export const OurCoursesPage: React.FC<OurCoursesPageProps> = ({ setCurrentPage, 
 
   const getCourseWhatsAppLink = (courseTitle: string) => {
     const message = lang === 'ur'
-      ? `السلام علیکم! مجھے الْإِخْلَاص اسلامک انسٹیٹیوٹ کے کورس "${courseTitle}" کے داخلے، شیڈول اور فیس کی تفصیلات درکار ہیں۔ براہِ کرم رہنمائی فرمائیں۔`
+      ? `السلام علیکم! مجھے الاخلاص اسلامک انسٹیٹیوٹ کے کورس "${courseTitle}" کے داخلے، شیڈول اور فیس کی تفصیلات درکار ہیں۔ براہِ کرم رہنمائی فرمائیں۔`
       : `Assalam-o-Alaikum! I saw the poster for "${courseTitle}" at Al-Ikhlas Islamic Institute and would like to inquire about admission, timing, and fee details.`;
     return `https://wa.me/923094884183?text=${encodeURIComponent(message)}`;
   };
@@ -89,8 +89,8 @@ export const OurCoursesPage: React.FC<OurCoursesPageProps> = ({ setCurrentPage, 
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0D5C3A]/70 text-[#F5E1A4] text-xs font-semibold border border-[#C99738]/40 shadow-xs">
             <IslamicStarIcon size={14} className="text-[#ECC876]" />
-            <span className={lang === 'ur' ? 'font-urdu' : 'tracking-wide'}>
-              {lang === 'ur' ? 'الْإِخْلَاص اسلامک انسٹیٹیوٹ • کورس پوسٹرز' : 'Al-Ikhlas Islamic Institute • Course Posters'}
+            <span className={lang === 'ur' ? 'font-urdu-title text-sm sm:text-base' : 'tracking-wide'}>
+              {lang === 'ur' ? 'الاخلاص اسلامک انسٹیٹیوٹ • کورس پوسٹرز' : 'Al-Ikhlas Islamic Institute • Course Posters'}
             </span>
           </div>
 

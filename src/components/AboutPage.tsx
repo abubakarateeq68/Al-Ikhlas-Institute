@@ -102,7 +102,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ setCurrentPage, lang }) =>
                 referrerPolicy="no-referrer"
               />
               <div className="p-4 sm:p-5 bg-white/95 backdrop-blur-md border-t border-[#C99738]/30">
-                <p className={`font-bold text-[#072B1B] ${lang === 'ur' ? 'font-urdu text-base' : 'font-display text-sm'}`}>
+                <p className={`font-bold text-[#072B1B] ${lang === 'ur' ? 'font-urdu-title text-xl sm:text-2xl' : 'font-display text-sm'}`}>
                   {t.about.libraryCaptionTitle}
                 </p>
                 <p className={`text-slate-500 italic ${lang === 'ur' ? 'font-urdu text-xs' : 'text-xs'}`}>
